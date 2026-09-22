@@ -243,6 +243,54 @@ abstract class AppLocalizations {
   /// **'Complete Rest'**
   String get completeRestButton;
 
+  /// No description provided for @autoTransitionSettingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto Transition'**
+  String get autoTransitionSettingsTitle;
+
+  /// No description provided for @autoTransitionEnabledLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Auto Transition'**
+  String get autoTransitionEnabledLabel;
+
+  /// No description provided for @transitionDelayLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Transition Delay'**
+  String get transitionDelayLabel;
+
+  /// No description provided for @defaultRestDurationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Default Rest Duration'**
+  String get defaultRestDurationLabel;
+
+  /// No description provided for @secondsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'sec'**
+  String get secondsLabel;
+
+  /// No description provided for @autoTransitionPendingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Next Auto Action'**
+  String get autoTransitionPendingLabel;
+
+  /// No description provided for @autoTransitionActionStartRest.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Rest'**
+  String get autoTransitionActionStartRest;
+
+  /// No description provided for @autoTransitionActionStartNextWorkout.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Next Event'**
+  String get autoTransitionActionStartNextWorkout;
+
   /// No description provided for @eventRun1.
   ///
   /// In en, this message translates to:

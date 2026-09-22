@@ -27,6 +27,7 @@ void main() {
     controller = SessionController(
       timeProvider: timeProvider,
       enableTicker: false,
+      autoTransitionEnabled: false,
     );
   });
 
@@ -111,6 +112,7 @@ void main() {
       events: twoEvents,
       timeProvider: timeProvider,
       enableTicker: false,
+      autoTransitionEnabled: false,
     );
 
     addTearDown(smallController.dispose);
@@ -135,5 +137,77 @@ void main() {
     expect(state.sessionState, SessionFlowState.completed);
     expect(state.currentEventIndex, 1);
     expect(state.completedEventCount, 2);
+  });
+
+  test('auto mode starts rest and next workout after configured delays', () {
+    final List<HyroxEventDefinition> twoEvents = <HyroxEventDefinition>[
+      const HyroxEventDefinition(order: 1, station: HyroxStation.run1),
+      const HyroxEventDefinition(order: 2, station: HyroxStation.skiErg),
+    ];
+
+    final SessionController autoController = SessionController(
+      events: twoEvents,
+      timeProvider: timeProvider,
+      enableTicker: false,
+      autoTransitionEnabled: true,
+      transitionDelay: const Duration(seconds: 3),
+      defaultRestDuration: const Duration(seconds: 5),
+    );
+
+    addTearDown(autoController.dispose);
+
+    autoController.startWorkout();
+    timeProvider.advance(const Duration(seconds: 4));
+    autoController.completeWorkout();
+
+    expect(
+      autoController.state.sessionState,
+      SessionFlowState.workoutCompleted,
+    );
+
+    timeProvider.advance(const Duration(seconds: 2));
+    autoController.refresh();
+    expect(
+      autoController.state.sessionState,
+      SessionFlowState.workoutCompleted,
+    );
+
+    timeProvider.advance(const Duration(seconds: 1));
+    autoController.refresh();
+    expect(autoController.state.sessionState, SessionFlowState.restRunning);
+
+    timeProvider.advance(const Duration(seconds: 4));
+    autoController.refresh();
+    expect(autoController.state.sessionState, SessionFlowState.restRunning);
+
+    timeProvider.advance(const Duration(seconds: 1));
+    autoController.refresh();
+    expect(autoController.state.currentEventIndex, 1);
+    expect(autoController.state.sessionState, SessionFlowState.idle);
+    expect(autoController.state.splits.first.completed, isTrue);
+    expect(
+      autoController.state.splits.first.restTime,
+      const Duration(seconds: 5),
+    );
+
+    timeProvider.advance(const Duration(seconds: 3));
+    autoController.refresh();
+    expect(autoController.state.sessionState, SessionFlowState.workoutRunning);
+    expect(autoController.state.currentEventIndex, 1);
+  });
+
+  test('auto mode is enabled by default with supported delay options', () {
+    final SessionController autoController = SessionController(
+      timeProvider: timeProvider,
+      enableTicker: false,
+    );
+
+    addTearDown(autoController.dispose);
+
+    expect(autoController.state.autoTransitionEnabled, isTrue);
+    expect(
+      SessionController.transitionDelayOptions,
+      contains(const Duration(seconds: 3)),
+    );
   });
 }

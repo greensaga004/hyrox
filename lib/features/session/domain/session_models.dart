@@ -12,6 +12,8 @@ enum SessionFlowState {
   completed,
 }
 
+enum AutoTransitionAction { startRest, startNextWorkout }
+
 @immutable
 class EventSplit {
   const EventSplit({
@@ -96,6 +98,11 @@ class SessionViewState {
     required this.sessionState,
     required this.timerSnapshot,
     required this.sessionCompleted,
+    required this.autoTransitionEnabled,
+    required this.transitionDelay,
+    required this.defaultRestDuration,
+    this.nextAutoTransitionAt,
+    this.nextAutoTransitionAction,
   }) : events = List<HyroxEventDefinition>.unmodifiable(events),
        splits = List<EventSplit>.unmodifiable(splits);
 
@@ -105,8 +112,18 @@ class SessionViewState {
   final SessionFlowState sessionState;
   final TimerSnapshot timerSnapshot;
   final bool sessionCompleted;
+  final bool autoTransitionEnabled;
+  final Duration transitionDelay;
+  final Duration defaultRestDuration;
+  final DateTime? nextAutoTransitionAt;
+  final AutoTransitionAction? nextAutoTransitionAction;
 
-  factory SessionViewState.initial(List<HyroxEventDefinition> events) {
+  factory SessionViewState.initial(
+    List<HyroxEventDefinition> events, {
+    required bool autoTransitionEnabled,
+    required Duration transitionDelay,
+    required Duration defaultRestDuration,
+  }) {
     return SessionViewState(
       events: events,
       splits: List<EventSplit>.filled(events.length, const EventSplit.zero()),
@@ -120,6 +137,9 @@ class SessionViewState {
         restTime: Duration.zero,
       ),
       sessionCompleted: false,
+      autoTransitionEnabled: autoTransitionEnabled,
+      transitionDelay: transitionDelay,
+      defaultRestDuration: defaultRestDuration,
     );
   }
 
@@ -149,6 +169,10 @@ class SessionViewState {
   }
 
   EventSplit get currentEventSplit => effectiveSplits[currentEventIndex];
+
+  bool get hasPendingAutoTransition {
+    return nextAutoTransitionAt != null && nextAutoTransitionAction != null;
+  }
 
   SessionTotals get totals {
     Duration workout = Duration.zero;
@@ -198,7 +222,21 @@ class SessionViewState {
     SessionFlowState? sessionState,
     TimerSnapshot? timerSnapshot,
     bool? sessionCompleted,
+    bool? autoTransitionEnabled,
+    Duration? transitionDelay,
+    Duration? defaultRestDuration,
+    DateTime? nextAutoTransitionAt,
+    AutoTransitionAction? nextAutoTransitionAction,
+    bool clearAutoTransition = false,
   }) {
+    final DateTime? effectiveAutoTransitionAt = clearAutoTransition
+        ? null
+        : (nextAutoTransitionAt ?? this.nextAutoTransitionAt);
+    final AutoTransitionAction? effectiveAutoTransitionAction =
+        clearAutoTransition
+        ? null
+        : (nextAutoTransitionAction ?? this.nextAutoTransitionAction);
+
     return SessionViewState(
       events: events ?? this.events,
       splits: splits ?? this.splits,
@@ -206,6 +244,12 @@ class SessionViewState {
       sessionState: sessionState ?? this.sessionState,
       timerSnapshot: timerSnapshot ?? this.timerSnapshot,
       sessionCompleted: sessionCompleted ?? this.sessionCompleted,
+      autoTransitionEnabled:
+          autoTransitionEnabled ?? this.autoTransitionEnabled,
+      transitionDelay: transitionDelay ?? this.transitionDelay,
+      defaultRestDuration: defaultRestDuration ?? this.defaultRestDuration,
+      nextAutoTransitionAt: effectiveAutoTransitionAt,
+      nextAutoTransitionAction: effectiveAutoTransitionAction,
     );
   }
 }
