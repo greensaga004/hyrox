@@ -19,7 +19,10 @@ void main() {
   test('returns exact zh_TW locale when available', () {
     const Locale deviceLocale = Locale('zh', 'TW');
 
-    final Locale resolved = AppLocaleConfig.resolve(deviceLocale, supportedLocales);
+    final Locale resolved = AppLocaleConfig.resolve(
+      deviceLocale,
+      supportedLocales,
+    );
 
     expect(resolved, const Locale('zh', 'TW'));
   });
@@ -27,7 +30,10 @@ void main() {
   test('falls back to English for unsupported locales', () {
     const Locale deviceLocale = Locale('es', 'ES');
 
-    final Locale resolved = AppLocaleConfig.resolve(deviceLocale, supportedLocales);
+    final Locale resolved = AppLocaleConfig.resolve(
+      deviceLocale,
+      supportedLocales,
+    );
 
     expect(resolved, const Locale('en'));
   });
