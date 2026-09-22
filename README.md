@@ -16,7 +16,7 @@ The official HYROX event sequence is fixed and not user-editable.
 
 ## Current Status
 
-Scaffold and foundations are complete.
+Scaffold/foundations and the timer engine are complete.
 
 Implemented now:
 
@@ -27,10 +27,11 @@ Implemented now:
 - ARB-based localization wiring (`en`, `zh`, `zh_TW`)
 - Locale resolution with English fallback
 - Basic widget and localization tests
+- Timestamp-based timer engine for workout, pause, and rest in `lib/core/timer`
+- Deterministic timer unit tests covering transitions, multi-pause accumulation, and totals
 
 Planned next:
 
-- Timestamp-based timer engine in `core/timer`
 - Full 16-event session workflow (manual + auto transition)
 - Background execution, notifications, and voice alerts
 - Statistics, history, and export
