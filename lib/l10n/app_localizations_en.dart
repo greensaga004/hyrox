@@ -83,6 +83,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get completeRestButton => 'Complete Rest';
 
   @override
+  String get autoTransitionSettingsTitle => 'Auto Transition';
+
+  @override
+  String get autoTransitionEnabledLabel => 'Enable Auto Transition';
+
+  @override
+  String get transitionDelayLabel => 'Transition Delay';
+
+  @override
+  String get defaultRestDurationLabel => 'Default Rest Duration';
+
+  @override
+  String get secondsLabel => 'sec';
+
+  @override
+  String get autoTransitionPendingLabel => 'Next Auto Action';
+
+  @override
+  String get autoTransitionActionStartRest => 'Start Rest';
+
+  @override
+  String get autoTransitionActionStartNextWorkout => 'Start Next Event';
+
+  @override
   String get eventRun1 => 'Run 1';
 
   @override

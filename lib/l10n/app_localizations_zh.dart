@@ -82,6 +82,30 @@ class AppLocalizationsZh extends AppLocalizations {
   String get completeRestButton => '完成休息';
 
   @override
+  String get autoTransitionSettingsTitle => '自動轉場';
+
+  @override
+  String get autoTransitionEnabledLabel => '啟用自動轉場';
+
+  @override
+  String get transitionDelayLabel => '轉場延遲';
+
+  @override
+  String get defaultRestDurationLabel => '預設休息時間';
+
+  @override
+  String get secondsLabel => '秒';
+
+  @override
+  String get autoTransitionPendingLabel => '下一個自動動作';
+
+  @override
+  String get autoTransitionActionStartRest => '開始休息';
+
+  @override
+  String get autoTransitionActionStartNextWorkout => '開始下一個項目';
+
+  @override
   String get eventRun1 => '跑步 1';
 
   @override
@@ -205,6 +229,30 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get completeRestButton => '完成休息';
+
+  @override
+  String get autoTransitionSettingsTitle => '自動轉場';
+
+  @override
+  String get autoTransitionEnabledLabel => '啟用自動轉場';
+
+  @override
+  String get transitionDelayLabel => '轉場延遲';
+
+  @override
+  String get defaultRestDurationLabel => '預設休息時間';
+
+  @override
+  String get secondsLabel => '秒';
+
+  @override
+  String get autoTransitionPendingLabel => '下一個自動動作';
+
+  @override
+  String get autoTransitionActionStartRest => '開始休息';
+
+  @override
+  String get autoTransitionActionStartNextWorkout => '開始下一個項目';
 
   @override
   String get eventRun1 => '跑步 1';

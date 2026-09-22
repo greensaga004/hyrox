@@ -71,6 +71,83 @@ class SessionScreen extends ConsumerWidget {
               ],
             ),
             const SizedBox(height: 20),
+            Text(
+              l10n.autoTransitionSettingsTitle,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: 8),
+            SwitchListTile(
+              title: Text(l10n.autoTransitionEnabledLabel),
+              value: state.autoTransitionEnabled,
+              onChanged: controller.setAutoTransitionEnabled,
+              contentPadding: EdgeInsets.zero,
+            ),
+            if (state.autoTransitionEnabled) ...<Widget>[
+              Wrap(
+                spacing: 12,
+                runSpacing: 12,
+                children: <Widget>[
+                  SizedBox(
+                    width: 220,
+                    child: DropdownButtonFormField<Duration>(
+                      initialValue: state.transitionDelay,
+                      decoration: InputDecoration(
+                        labelText: l10n.transitionDelayLabel,
+                        border: const OutlineInputBorder(),
+                      ),
+                      items: SessionController.transitionDelayOptions
+                          .map(
+                            (Duration value) => DropdownMenuItem<Duration>(
+                              value: value,
+                              child: Text(
+                                '${value.inSeconds} ${l10n.secondsLabel}',
+                              ),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (Duration? value) {
+                        if (value != null) {
+                          controller.setTransitionDelay(value);
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    width: 220,
+                    child: DropdownButtonFormField<Duration>(
+                      initialValue: state.defaultRestDuration,
+                      decoration: InputDecoration(
+                        labelText: l10n.defaultRestDurationLabel,
+                        border: const OutlineInputBorder(),
+                      ),
+                      items: SessionController.defaultRestDurationOptions
+                          .map(
+                            (Duration value) => DropdownMenuItem<Duration>(
+                              value: value,
+                              child: Text(
+                                '${value.inSeconds} ${l10n.secondsLabel}',
+                              ),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (Duration? value) {
+                        if (value != null) {
+                          controller.setDefaultRestDuration(value);
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              if (state.hasPendingAutoTransition &&
+                  state.nextAutoTransitionAction != null)
+                Text(
+                  '${l10n.autoTransitionPendingLabel}: ${_autoTransitionActionLabel(l10n, state.nextAutoTransitionAction!)} (${_formatDuration(controller.autoTransitionRemaining())})',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+            ],
+            const SizedBox(height: 20),
             Wrap(
               spacing: 12,
               runSpacing: 12,
@@ -187,6 +264,18 @@ class SessionScreen extends ConsumerWidget {
 
   String _eventTitle(AppLocalizations l10n, HyroxEventDefinition event) {
     return '${event.order}. ${_eventName(l10n, event.station)}';
+  }
+
+  String _autoTransitionActionLabel(
+    AppLocalizations l10n,
+    AutoTransitionAction action,
+  ) {
+    switch (action) {
+      case AutoTransitionAction.startRest:
+        return l10n.autoTransitionActionStartRest;
+      case AutoTransitionAction.startNextWorkout:
+        return l10n.autoTransitionActionStartNextWorkout;
+    }
   }
 
   String _eventName(AppLocalizations l10n, HyroxStation station) {

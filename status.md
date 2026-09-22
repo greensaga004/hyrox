@@ -13,20 +13,20 @@ See `project.md` for Project Name, Repository, and Tech Stack.
 
 ## Current Work Item
 
-Work Item Name: Session tracking flow
+Work Item Name: Auto transition mode
 
-Description: Build the session screen flow for all 16 fixed HYROX events in manual mode with Start/Pause/Resume/Complete/Rest controls, tracking workout time, pause time, pause count, and rest time per event. Roadmap item #3 (FULL track, depends on item #2).
+Description: Completing a workout auto-starts rest and the next event using configurable transition delay and default rest duration. Roadmap item #4 (LIGHT track, depends on item #3).
 
 ---
 
 ## Track
 
-FULL
+LIGHT
 
 Tracks:
 
-- FULL — INIT → SPEC → TASK → IMPLEMENTATION → VERIFICATION. Use for large/risky items with real unknowns.
-- LIGHT — INIT → IMPLEMENTATION → VERIFICATION (skips the SPEC and TASK docs). Use for small, clear items.
+- FULL - INIT -> SPEC -> TASK -> IMPLEMENTATION -> VERIFICATION. Use for large/risky items with real unknowns.
+- LIGHT - INIT -> IMPLEMENTATION -> VERIFICATION (skips the SPEC and TASK docs). Use for small, clear items.
 
 Choose LIGHT when scope and design are obvious; FULL when there are unknowns worth writing down.
 
@@ -86,11 +86,11 @@ Exit Criteria:
 
 Goal:
 
-Define requirements and MVP.  (FULL track only — skipped on LIGHT.)
+Define requirements and MVP.  (FULL track only - skipped on LIGHT.)
 
 Output:
 
-docs/workitems/<name>.md — "Spec" section
+docs/workitems/<name>.md - "Spec" section
 
 Allowed:
 
@@ -118,11 +118,11 @@ Exit Criteria:
 
 Goal:
 
-Break the work item into implementable tasks.  (FULL track only — skipped on LIGHT.)
+Break the work item into implementable tasks.  (FULL track only - skipped on LIGHT.)
 
 Output:
 
-docs/workitems/<name>.md — "Tasks" section (same file as SPEC)
+docs/workitems/<name>.md - "Tasks" section (same file as SPEC)
 
 Allowed:
 
@@ -203,10 +203,10 @@ Exit Criteria:
 
 Flow (only if project.md Delivery Policy sets Pull Request Required = yes):
 
-1. `open pr` — confirm, then push branch and open a PR to main.
+1. `open pr` - confirm, then push branch and open a PR to main.
 2. Wait for CI green + review approval.
 3. Merge the PR.
-4. `finish` — switch to main and delete the branch.
+4. `finish` - switch to main and delete the branch.
 
 If Pull Request Required = no, skip straight to `finish`.
 
@@ -226,18 +226,18 @@ If Pull Request Required = no, skip straight to `finish`.
 
 ### SPEC
 
-- [x] Business Goal
-- [x] User Story
-- [x] MVP Defined
-- [x] Scope Defined
-- [x] Acceptance Criteria
+- [ ] Business Goal
+- [ ] User Story
+- [ ] MVP Defined
+- [ ] Scope Defined
+- [ ] Acceptance Criteria
 
 ### TASK
 
-- [x] Core / Logic Tasks
-- [x] UI / Interface Tasks
-- [x] Data / Storage Tasks
-- [x] Test Tasks
+- [ ] Core / Logic Tasks
+- [ ] UI / Interface Tasks
+- [ ] Data / Storage Tasks
+- [ ] Test Tasks
 
 ### IMPLEMENTATION
 
@@ -257,9 +257,10 @@ If Pull Request Required = no, skip straight to `finish`.
 
 ## Current Task
 
-VERIFICATION started for roadmap item #3 after implementation completion.
-Focus is now spec acceptance coverage, regression checks, and CI confirmation.
-Acceptance criteria are verified and local checks are green: flutter analyze and flutter test pass.
+VERIFICATION completed locally for roadmap item #4 (auto transition mode).
+
+Definition of Done coverage is confirmed and regression checks are green.
+Local validation passed: flutter analyze and flutter test.
 
 > Keep this to 3-4 lines. Detail belongs in docs/workitems/<name>.md, not here.
 
@@ -267,7 +268,7 @@ Acceptance criteria are verified and local checks are green: flutter analyze and
 
 ## Next Action
 
-Prepare PR title/description and request confirmation to run open pr so CI can execute.
+Prepare PR title/description and request approval to run open pr so CI can execute.
 
 ---
 
@@ -277,7 +278,7 @@ Always read this file first.
 
 Rules:
 
-1. Follow the Current Stage and Track. On the LIGHT track, INIT hands off directly to IMPLEMENTATION — skip SPEC and TASK.
+1. Follow the Current Stage and Track. On the LIGHT track, INIT hands off directly to IMPLEMENTATION - skip SPEC and TASK.
 2. Confirm the Track during INIT: FULL for items with unknowns, LIGHT for small/clear items. Record it in the Track section.
 3. Do not jump to later stages.
 4. Prefer MVP solutions.
@@ -292,8 +293,8 @@ Rules:
 
 Efficiency (keep credit/token spend low):
 
-- Reuse the shell environment: configure PATH/toolchain once per terminal, or call the project's build script — don't re-emit long environment setup on every command.
-- Batch build + test into one command instead of running configure → build → test as separate calls.
+- Reuse the shell environment: configure PATH/toolchain once per terminal, or call the project's build script - don't re-emit long environment setup on every command.
+- Batch build + test into one command instead of running configure -> build -> test as separate calls.
 - Don't re-run builds or tests that already passed unless the code changed.
 - Prefer fewer, larger file reads over many small ranged reads of the same file.
 - Persist build/run/test commands and workflow conventions to repo memory once confirmed, so they aren't re-derived each session.
@@ -316,7 +317,7 @@ goto implementation
 
 goto verification
 
-goto next stage   (advances along the current Track; on LIGHT, INIT → IMPLEMENTATION)
+goto next stage   (advances along the current Track; on LIGHT, INIT -> IMPLEMENTATION)
 
 open pr   (after VERIFICATION done: push branch and open a PR to main; requires CI green if project.md sets CI Required = yes; must be confirmed by the user before the PR is actually opened)
 
