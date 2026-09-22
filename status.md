@@ -13,9 +13,9 @@ See `project.md` for Project Name, Repository, and Tech Stack.
 
 ## Current Work Item
 
-Work Item Name: TBD
+Work Item Name: Project scaffold & foundations
 
-Description: TBD
+Description: Stand up the Flutter Android app skeleton so every later feature has a home. Create the clean-architecture folder structure (app/, core/, features/), add and wire core dependencies (flutter_riverpod, go_router, hive/hive_flutter), initialize Hive, apply a Material 3 theme with dark mode, set up en + zh_TW ARB localization following device language (English fallback), and route to a placeholder home screen via go_router. Roadmap item #1 (FULL track, no dependencies).
 
 ---
 
@@ -34,7 +34,7 @@ Choose LIGHT when scope and design are obvious; FULL when there are unknowns wor
 
 ## Current Stage
 
-INIT
+VERIFICATION
 
 Available Stages (depends on Track):
 
@@ -218,46 +218,49 @@ If Pull Request Required = no, skip straight to `finish`.
 
 ### INIT
 
-- [ ] Branch Created
-- [ ] Work Item Name + Description
-- [ ] Tech Stack Confirmed
-- [ ] Scope Boundary Agreed
-- [ ] Definition of Done + Overlap Checked
+- [x] Branch Created
+- [x] Work Item Name + Description
+- [x] Tech Stack Confirmed
+- [x] Scope Boundary Agreed
+- [x] Definition of Done + Overlap Checked
 
 ### SPEC
 
-- [ ] Business Goal
-- [ ] User Story
-- [ ] MVP Defined
-- [ ] Scope Defined
-- [ ] Acceptance Criteria
+- [x] Business Goal
+- [x] User Story
+- [x] MVP Defined
+- [x] Scope Defined
+- [x] Acceptance Criteria
 
 ### TASK
 
-- [ ] Core / Logic Tasks
-- [ ] UI / Interface Tasks
-- [ ] Data / Storage Tasks
-- [ ] Test Tasks
+- [x] Core / Logic Tasks
+- [x] UI / Interface Tasks
+- [x] Data / Storage Tasks
+- [x] Test Tasks
 
 ### IMPLEMENTATION
 
-- [ ] Data / Storage Changes
-- [ ] Core / Logic Changes
-- [ ] UI / Interface Changes
-- [ ] Unit Tests
-- [ ] Docs/README updated
+- [x] Data / Storage Changes
+- [x] Core / Logic Changes
+- [x] UI / Interface Changes
+- [x] Unit Tests
+- [x] Docs/README updated
 
 ### VERIFICATION
 
-- [ ] Work Item Tested
-- [ ] Spec Coverage Verified (on the LIGHT track, verify against the item's Definition of Done)
+- [x] Work Item Tested
+- [x] Spec Coverage Verified (on the LIGHT track, verify against the item's Definition of Done)
 - [ ] CI Passed (required if project.md Delivery Policy sets CI Required = yes)
 
 ---
 
 ## Current Task
 
-TBD
+Verification complete locally for item #1 against acceptance criteria.
+Flutter analyze, flutter test, and flutter build apk --debug all pass.
+Locale resolution now explicitly verifies zh_TW matching and English fallback.
+Only CI status is pending and will be confirmed by the PR pipeline.
 
 > Keep this to 3-4 lines. Detail belongs in docs/workitems/<name>.md, not here.
 
@@ -265,7 +268,7 @@ TBD
 
 ## Next Action
 
-TBD
+Open PR to main so required CI can run; after CI is green, mark CI Passed and proceed to delivery steps.
 
 ---
 

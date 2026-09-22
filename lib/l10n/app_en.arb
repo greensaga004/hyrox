@@ -1,0 +1,6 @@
+{
+  "@@locale": "en",
+  "appTitle": "HYROX Training Tracker",
+  "foundationReady": "Foundation scaffold is ready.",
+  "placeholderDescription": "Core architecture, routing, localization, and storage bootstrap are wired."
+}
