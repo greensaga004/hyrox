@@ -50,6 +50,14 @@ class TimerEngine {
   TimerEngine({TimeProvider? timeProvider})
     : _timeProvider = timeProvider ?? const SystemTimeProvider();
 
+  TimerEngine.restored({
+    required TimerSnapshot snapshot,
+    required DateTime capturedAt,
+    TimeProvider? timeProvider,
+  }) : _timeProvider = timeProvider ?? const SystemTimeProvider() {
+    _restoreFromSnapshot(snapshot, capturedAt: capturedAt);
+  }
+
   final TimeProvider _timeProvider;
 
   TimerPhase _phase = TimerPhase.idle;
@@ -151,6 +159,68 @@ class TimerEngine {
     }
 
     throw StateError('Cannot $action while phase is $_phase.');
+  }
+
+  void _restoreFromSnapshot(
+    TimerSnapshot snapshot, {
+    required DateTime capturedAt,
+  }) {
+    _phase = snapshot.phase;
+    _pauseCount = snapshot.pauseCount;
+    _accumulatedWorkout = snapshot.workoutTime;
+    _accumulatedPause = snapshot.pauseTime;
+    _accumulatedRest = snapshot.restTime;
+
+    _workoutStartedAt = snapshot.workoutStartedAt;
+    _pauseStartedAt = snapshot.pauseStartedAt;
+    _restStartedAt = snapshot.restStartedAt;
+
+    switch (_phase) {
+      case TimerPhase.workoutRunning:
+        if (_workoutStartedAt != null) {
+          final Duration activeElapsed = capturedAt.difference(
+            _workoutStartedAt!,
+          );
+          _accumulatedWorkout -= activeElapsed;
+          if (_accumulatedWorkout.isNegative) {
+            _accumulatedWorkout = Duration.zero;
+          }
+        }
+        _pauseStartedAt = null;
+        _restStartedAt = null;
+        return;
+      case TimerPhase.eventPaused:
+        if (_pauseStartedAt != null) {
+          final Duration activeElapsed = capturedAt.difference(
+            _pauseStartedAt!,
+          );
+          _accumulatedPause -= activeElapsed;
+          if (_accumulatedPause.isNegative) {
+            _accumulatedPause = Duration.zero;
+          }
+        }
+        _workoutStartedAt = null;
+        _restStartedAt = null;
+        return;
+      case TimerPhase.restRunning:
+        if (_restStartedAt != null) {
+          final Duration activeElapsed = capturedAt.difference(_restStartedAt!);
+          _accumulatedRest -= activeElapsed;
+          if (_accumulatedRest.isNegative) {
+            _accumulatedRest = Duration.zero;
+          }
+        }
+        _workoutStartedAt = null;
+        _pauseStartedAt = null;
+        return;
+      case TimerPhase.idle:
+      case TimerPhase.workoutCompleted:
+      case TimerPhase.completed:
+        _workoutStartedAt = null;
+        _pauseStartedAt = null;
+        _restStartedAt = null;
+        return;
+    }
   }
 
   TimerSnapshot _buildSnapshot() {

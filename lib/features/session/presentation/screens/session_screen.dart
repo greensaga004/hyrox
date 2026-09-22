@@ -2,15 +2,85 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hyrox/features/session/application/session_controller.dart';
+import 'package:hyrox/features/session/data/session_recovery_models.dart';
 import 'package:hyrox/features/session/domain/hyrox_events.dart';
 import 'package:hyrox/features/session/domain/session_models.dart';
 import 'package:hyrox/l10n/app_localizations.dart';
 
-class SessionScreen extends ConsumerWidget {
+class SessionScreen extends ConsumerStatefulWidget {
   const SessionScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SessionScreen> createState() => _SessionScreenState();
+}
+
+class _SessionScreenState extends ConsumerState<SessionScreen> {
+  bool _checkedRecoveryPrompt = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _maybeShowRecoveryPrompt();
+    });
+  }
+
+  Future<void> _maybeShowRecoveryPrompt() async {
+    if (_checkedRecoveryPrompt || !mounted) {
+      return;
+    }
+
+    _checkedRecoveryPrompt = true;
+    final SessionController controller = ref.read(
+      sessionControllerProvider.notifier,
+    );
+    final SessionRecoveryPayload? payload = await controller
+        .loadRecoveryCandidate();
+
+    if (!mounted || payload == null) {
+      return;
+    }
+
+    final AppLocalizations l10n = AppLocalizations.of(context);
+    final bool? resume = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text(l10n.recoveryPromptTitle),
+          content: Text(l10n.recoveryPromptMessage),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop(false);
+              },
+              child: Text(l10n.recoveryDiscardButton),
+            ),
+            FilledButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop(true);
+              },
+              child: Text(l10n.recoveryResumeButton),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    if (resume == true) {
+      await controller.restoreFromRecovery(payload);
+      return;
+    }
+
+    await controller.discardRecovery();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final SessionViewState state = ref.watch(sessionControllerProvider);
     final SessionController controller = ref.read(
       sessionControllerProvider.notifier,

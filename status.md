@@ -13,15 +13,15 @@ See `project.md` for Project Name, Repository, and Tech Stack.
 
 ## Current Work Item
 
-Work Item Name: Auto transition mode
+Work Item Name: Persistence & recovery
 
-Description: Completing a workout auto-starts rest and the next event using configurable transition delay and default rest duration. Roadmap item #4 (LIGHT track, depends on item #3).
+Description: Active session and splits persist to Hive and restore after restart/crash/reboot via a Resume / Discard prompt. Roadmap item #5 (FULL track, depends on item #3).
 
 ---
 
 ## Track
 
-LIGHT
+FULL
 
 Tracks:
 
@@ -206,7 +206,7 @@ Flow (only if project.md Delivery Policy sets Pull Request Required = yes):
 1. `open pr` - confirm, then push branch and open a PR to main.
 2. Wait for CI green + review approval.
 3. Merge the PR.
-4. `finish` - switch to main and delete the branch.
+4. `finish` — switch to main, update `project.md` progress (Roadmap row status and any completed Milestone checkbox), then delete the branch.
 
 If Pull Request Required = no, skip straight to `finish`.
 
@@ -226,18 +226,18 @@ If Pull Request Required = no, skip straight to `finish`.
 
 ### SPEC
 
-- [ ] Business Goal
-- [ ] User Story
-- [ ] MVP Defined
-- [ ] Scope Defined
-- [ ] Acceptance Criteria
+- [x] Business Goal
+- [x] User Story
+- [x] MVP Defined
+- [x] Scope Defined
+- [x] Acceptance Criteria
 
 ### TASK
 
-- [ ] Core / Logic Tasks
-- [ ] UI / Interface Tasks
-- [ ] Data / Storage Tasks
-- [ ] Test Tasks
+- [x] Core / Logic Tasks
+- [x] UI / Interface Tasks
+- [x] Data / Storage Tasks
+- [x] Test Tasks
 
 ### IMPLEMENTATION
 
@@ -250,17 +250,17 @@ If Pull Request Required = no, skip straight to `finish`.
 ### VERIFICATION
 
 - [x] Work Item Tested
-- [x] Spec Coverage Verified (on the LIGHT track, verify against the item's Definition of Done)
+- [x] Spec Coverage Verified
 - [ ] CI Passed (required if project.md Delivery Policy sets CI Required = yes)
 
 ---
 
 ## Current Task
 
-VERIFICATION completed locally for roadmap item #4 (auto transition mode).
+VERIFICATION stage started for roadmap item #5 on branch feature/persistence-recovery.
 
-Definition of Done coverage is confirmed and regression checks are green.
-Local validation passed: flutter analyze and flutter test.
+Local verification completed: acceptance criteria are checked against
+implementation and test evidence, and analyze/test are green.
 
 > Keep this to 3-4 lines. Detail belongs in docs/workitems/<name>.md, not here.
 
@@ -268,7 +268,7 @@ Local validation passed: flutter analyze and flutter test.
 
 ## Next Action
 
-Prepare PR title/description and request approval to run open pr so CI can execute.
+Prepare PR title/description and request approval to run open pr for CI.
 
 ---
 
@@ -321,4 +321,4 @@ goto next stage   (advances along the current Track; on LIGHT, INIT -> IMPLEMENT
 
 open pr   (after VERIFICATION done: push branch and open a PR to main; requires CI green if project.md sets CI Required = yes; must be confirmed by the user before the PR is actually opened)
 
-finish (switch to main branch and delete the current branch)
+finish   (switch to main, update project.md progress (Roadmap/Milestones), then delete the current branch)
