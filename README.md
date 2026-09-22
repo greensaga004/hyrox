@@ -12,6 +12,25 @@ Works for any project type: web, desktop (Windows/macOS/Linux), mobile (Android/
 
 ---
 
+## Current Scaffold Status
+
+Roadmap item 1 (Project scaffold & foundations) is implemented on branch
+feature/project-scaffold.
+
+- Flutter Android project scaffold exists in this repository.
+- Clean-architecture folders are in place under lib/app, lib/core, and lib/features.
+- Riverpod, go_router, Hive bootstrap, Material 3 theme, and en/zh localization are wired.
+
+Validation commands used:
+
+```bash
+flutter analyze
+flutter test
+flutter build apk --debug
+```
+
+---
+
 ## Two flows
 
 ### 1. Whole new project

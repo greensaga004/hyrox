@@ -1,0 +1,6 @@
+{
+  "@@locale": "zh_TW",
+  "appTitle": "HYROX 訓練追蹤器",
+  "foundationReady": "基礎架構已完成。",
+  "placeholderDescription": "核心架構、路由、本地化與儲存啟動已串接完成。"
+}
