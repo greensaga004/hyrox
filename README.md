@@ -1,48 +1,53 @@
 # HYROX Training Tracker
 
-Android-first Flutter app for timing and analyzing HYROX training sessions with a fixed 16-event flow.
+Android-first Flutter app for timing HYROX training sessions with a fixed 16-event sequence.
 
 ## Overview
 
-This project is building a production-ready HYROX tracker focused on:
+This project targets accurate, training-focused timing for HYROX sessions:
 
-- Accurate event timing (workout, pause, and rest)
-- Reliable behavior when screen is off, phone is locked, or app is backgrounded
-- Session history and performance analytics
-- Exportable training reports
-- Bilingual UI (English and Traditional Chinese)
+- Workout time (active work)
+- Pause time and pause count (inside an event)
+- Rest time (between events)
+- Session totals across all events
 
-The official HYROX event sequence is fixed and not user-editable.
+The 16 official HYROX events are fixed and not user-editable.
 
-## Current Status
+## Current Capabilities
 
-Scaffold/foundations and the timer engine are complete.
+Implemented in the app now:
 
-Implemented now:
+- Clean project scaffold with Riverpod, GoRouter, Hive bootstrap, and Material 3
+- Timestamp-based timer engine in `lib/core/timer` (source of truth for elapsed time)
+- Full manual session flow across all 16 events:
+  - Start Workout
+  - Pause / Resume
+  - Complete Workout
+  - Start Rest / Complete Rest
+- Auto transition mode:
+  - Auto start rest after workout completion
+  - Auto start next event workout after rest completion
+  - Transition delay options: `0s`, `3s`, `5s`, `10s`
+  - Configurable default rest duration
+  - Auto transition enabled by default
+- Session UI with per-event metrics and running totals
+- Localization wiring with ARB files and locale fallback behavior
+- Unit and widget tests for timer/session flow and key UI states
 
-- Flutter app bootstrap with Riverpod root
-- Material 3 light/dark themes
-- GoRouter with initial route
-- Hive initialization bootstrap
-- ARB-based localization wiring (`en`, `zh`, `zh_TW`)
-- Locale resolution with English fallback
-- Basic widget and localization tests
-- Timestamp-based timer engine for workout, pause, and rest in `lib/core/timer`
-- Deterministic timer unit tests covering transitions, multi-pause accumulation, and totals
+Not yet implemented:
 
-Planned next:
+- Persistence/recovery of active session state
+- Background task integration + actionable notifications
+- Voice alerts (TTS)
+- Statistics, history/comparison, and export
 
-- Full 16-event session workflow (manual + auto transition)
-- Background execution, notifications, and voice alerts
-- Statistics, history, and export
-
-## Tech Stack
+## Tech Stack (Current)
 
 - Flutter 3.35+
-- Dart SDK: `^3.13.1`
+- Dart SDK `^3.13.1`
 - State management: `flutter_riverpod`
 - Routing: `go_router`
-- Local storage: `hive`, `hive_flutter`
+- Local storage setup: `hive`, `hive_flutter`
 - Localization: `flutter_localizations`, `intl`
 
 ## Architecture
@@ -50,8 +55,6 @@ Planned next:
 Clean Architecture with feature-based organization:
 
 Presentation -> Application -> Domain -> Data
-
-Top-level layout:
 
 ```text
 lib/
@@ -68,22 +71,43 @@ lib/
     timer/
     tts/
   features/
-    session/
-    statistics/
     history/
+    session/
     settings/
+    statistics/
   l10n/
   main.dart
 ```
+
+## HYROX Event Order
+
+The event order is immutable:
+
+1. Run 1
+2. SkiErg
+3. Run 2
+4. Sled Push
+5. Run 3
+6. Sled Pull
+7. Run 4
+8. Burpee Broad Jump
+9. Run 5
+10. Rowing
+11. Run 6
+12. Farmer's Carry
+13. Run 7
+14. Sandbag Lunges
+15. Run 8
+16. Wall Balls
 
 ## Getting Started
 
 ### Prerequisites
 
-- Flutter SDK installed and available on PATH
-- Android SDK and emulator/device for Android runs
+- Flutter SDK on `PATH`
+- Android SDK + emulator/device
 
-Check setup:
+Verify environment:
 
 ```bash
 flutter doctor
@@ -95,13 +119,13 @@ flutter doctor
 flutter pub get
 ```
 
-### Run App
+### Run
 
 ```bash
 flutter run
 ```
 
-### Quality Checks
+### Validate
 
 ```bash
 flutter analyze
@@ -111,42 +135,37 @@ flutter build apk --debug
 
 ## Localization
 
-- ARB files are stored in `lib/l10n/`
-- Current locales: `en`, `zh`, `zh_TW`
-- Locale resolution prefers exact match and falls back to English when unsupported
+- ARB files: `lib/l10n/`
+- Locales currently wired: `en`, `zh`, `zh_TW`
+- Locale resolution falls back to English when unsupported
 
-## Core Domain Rules
+## Timing Rules
 
-- Event order is immutable (16 official HYROX events)
 - Event total time = workout time + pause time
 - Session total time = workout total + pause total + rest total
-- Timer calculations will use timestamps (`DateTime.now().difference(...)`) as source of truth
+- Elapsed calculations are timestamp-based (`DateTime.now().difference(...)`)
 
 ## Roadmap Snapshot
+
+Completed:
 
 1. Project scaffold and foundations
 2. Timer engine
 3. Session tracking flow
 4. Auto transition mode
+
+Next:
+
 5. Persistence and recovery
 6. Background execution and notifications
 7. Voice alerts
 8. Statistics and analytics
 9. History and comparison
-10. Settings
+10. Settings completion
 11. Export and share
 
-## Workflow
+## Workflow Docs
 
-This repository tracks work per branch/work item:
-
-- Global plan and roadmap: `project.md`
-- Active work item progress: `status.md`
-- Detailed FULL-track specs/tasks: `workitems/`
-
-Recommended branch naming:
-
-- `feature/<name>`
-- `fix/<name>`
-- `chore/<name>`
-- `docs/<name>`
+- Whole-project roadmap: `project.md`
+- Active work item tracking: `status.md`
+- Work-item specs/tasks: `workitems/`
