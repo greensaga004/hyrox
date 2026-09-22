@@ -10,9 +10,7 @@ class HomePlaceholderScreen extends StatelessWidget {
     final AppLocalizations l10n = AppLocalizations.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.appTitle),
-      ),
+      appBar: AppBar(title: Text(l10n.appTitle)),
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(

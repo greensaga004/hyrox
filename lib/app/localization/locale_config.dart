@@ -10,9 +10,12 @@ class AppLocaleConfig {
     }
 
     for (final Locale supportedLocale in supportedLocales) {
-      final bool sameLanguage = supportedLocale.languageCode == locale.languageCode;
-      final bool sameScript = (supportedLocale.scriptCode ?? '') == (locale.scriptCode ?? '');
-      final bool sameCountry = (supportedLocale.countryCode ?? '') == (locale.countryCode ?? '');
+      final bool sameLanguage =
+          supportedLocale.languageCode == locale.languageCode;
+      final bool sameScript =
+          (supportedLocale.scriptCode ?? '') == (locale.scriptCode ?? '');
+      final bool sameCountry =
+          (supportedLocale.countryCode ?? '') == (locale.countryCode ?? '');
       if (sameLanguage && sameScript && sameCountry) {
         return supportedLocale;
       }
