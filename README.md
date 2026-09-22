@@ -1,27 +1,106 @@
-# Project Workflow Template
+# HYROX Training Tracker
 
-A lightweight, stage-based workflow for building software one work item at a time.
-Two files drive everything:
+Android-first Flutter app for timing and analyzing HYROX training sessions with a fixed 16-event flow.
 
-| File | Scope | When |
-| --- | --- | --- |
-| `project.md` | Whole codebase | Filled once at project start (or scanned from an existing repo) |
-| `status.md` | One work item | Copied per branch; walks a Track — FULL (INIT → SPEC → TASK → IMPLEMENTATION → VERIFICATION) or LIGHT (INIT → IMPLEMENTATION → VERIFICATION) |
+## Overview
 
-Works for any project type: web, desktop (Windows/macOS/Linux), mobile (Android/iOS), CLI, library, backend, or embedded.
+This project is building a production-ready HYROX tracker focused on:
 
----
+- Accurate event timing (workout, pause, and rest)
+- Reliable behavior when screen is off, phone is locked, or app is backgrounded
+- Session history and performance analytics
+- Exportable training reports
+- Bilingual UI (English and Traditional Chinese)
 
-## Current Scaffold Status
+The official HYROX event sequence is fixed and not user-editable.
 
-Roadmap item 1 (Project scaffold & foundations) is implemented on branch
-feature/project-scaffold.
+## Current Status
 
-- Flutter Android project scaffold exists in this repository.
-- Clean-architecture folders are in place under lib/app, lib/core, and lib/features.
-- Riverpod, go_router, Hive bootstrap, Material 3 theme, and en/zh localization are wired.
+Scaffold and foundations are complete.
 
-Validation commands used:
+Implemented now:
+
+- Flutter app bootstrap with Riverpod root
+- Material 3 light/dark themes
+- GoRouter with initial route
+- Hive initialization bootstrap
+- ARB-based localization wiring (`en`, `zh`, `zh_TW`)
+- Locale resolution with English fallback
+- Basic widget and localization tests
+
+Planned next:
+
+- Timestamp-based timer engine in `core/timer`
+- Full 16-event session workflow (manual + auto transition)
+- Background execution, notifications, and voice alerts
+- Statistics, history, and export
+
+## Tech Stack
+
+- Flutter 3.35+
+- Dart SDK: `^3.13.1`
+- State management: `flutter_riverpod`
+- Routing: `go_router`
+- Local storage: `hive`, `hive_flutter`
+- Localization: `flutter_localizations`, `intl`
+
+## Architecture
+
+Clean Architecture with feature-based organization:
+
+Presentation -> Application -> Domain -> Data
+
+Top-level layout:
+
+```text
+lib/
+  app/
+    localization/
+    router/
+    theme/
+  core/
+    analytics/
+    background/
+    export/
+    notifications/
+    storage/
+    timer/
+    tts/
+  features/
+    session/
+    statistics/
+    history/
+    settings/
+  l10n/
+  main.dart
+```
+
+## Getting Started
+
+### Prerequisites
+
+- Flutter SDK installed and available on PATH
+- Android SDK and emulator/device for Android runs
+
+Check setup:
+
+```bash
+flutter doctor
+```
+
+### Install Dependencies
+
+```bash
+flutter pub get
+```
+
+### Run App
+
+```bash
+flutter run
+```
+
+### Quality Checks
 
 ```bash
 flutter analyze
@@ -29,56 +108,44 @@ flutter test
 flutter build apk --debug
 ```
 
----
+## Localization
 
-## Two flows
+- ARB files are stored in `lib/l10n/`
+- Current locales: `en`, `zh`, `zh_TW`
+- Locale resolution prefers exact match and falls back to English when unsupported
 
-### 1. Whole new project
+## Core Domain Rules
 
-1. Create the project, then fill in `project.md`: Final Target, Architecture, Roadmap (give each roadmap item a one-line Definition of Done).
-2. `project.md` is read **once** to initialize; after that it is ignored during branch work and only revisited on `report` from `main`/`master`, or when you ask to modify it.
+- Event order is immutable (16 official HYROX events)
+- Event total time = workout time + pause time
+- Session total time = workout total + pause total + rest total
+- Timer calculations will use timestamps (`DateTime.now().difference(...)`) as source of truth
 
-### 2. Existing project (e.g. OpenBMC, Linux kernel)
+## Roadmap Snapshot
 
-1. Copy the template in, then run `init` — it scans the codebase (languages, frameworks, structure, build files) and drafts the empty fields for your confirmation.
-2. Fill Final Target and Roadmap yourself (a scan can't invent those).
+1. Project scaffold and foundations
+2. Timer engine
+3. Session tracking flow
+4. Auto transition mode
+5. Persistence and recovery
+6. Background execution and notifications
+7. Voice alerts
+8. Statistics and analytics
+9. History and comparison
+10. Settings
+11. Export and share
 
----
+## Workflow
 
-## Is `project.md` defined?
+This repository tracks work per branch/work item:
 
-`project.md` carries an **Init Status** marker (`TEMPLATE` or `DEFINED`), so the check is a one-liner:
+- Global plan and roadmap: `project.md`
+- Active work item progress: `status.md`
+- Detailed FULL-track specs/tasks: `workitems/`
 
-```bash
-if [ -f docs/project.md ] && grep -q '^Status: DEFINED' docs/project.md; then
-  echo "defined"
-else
-  echo "not defined"
-fi
-```
+Recommended branch naming:
 
----
-
-## Per work item (single branch)
-
-1. Create a branch: `<type>/<short-name>` (type = `feature` / `fix` / `chore` / `docs`).
-2. Copy `status.md` into `docs/` and run `goto init` to reset it.
-3. Pick a **Track**: FULL for large/risky items (full SPEC + TASK pipeline), LIGHT for small/clear ones (skips SPEC + TASK).
-4. Progress through the stages with `goto next stage`.
-5. Deliver: `open pr` (if your Delivery Policy requires a PR — always confirmed before opening), then merge, then `finish`.
-
----
-
-## Where to put the files
-
-- Small/new project: `docs/`
-- Large existing repo (kernel, OpenBMC): a dedicated folder like `.workflow/` to avoid clashing with the project's own `docs/` or `Documentation/`. Add it to `.gitignore` if you don't intend to upstream it.
-
-On the FULL track, SPEC and TASK outputs land together in `docs/workitems/<name>.md`. The LIGHT track skips both — status.md holds the whole trail.
-
----
-
-## Using this repo
-
-This is a **template repository** — click **Use this template** (or copy `project.md` + `status.md`) into your project on a new branch.
-See each file's own **Commands** and **AI Instructions** sections for the full command set.
+- `feature/<name>`
+- `fix/<name>`
+- `chore/<name>`
+- `docs/<name>`
