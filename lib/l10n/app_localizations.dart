@@ -116,6 +116,228 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Core architecture, routing, localization, and storage bootstrap are wired.'**
   String get placeholderDescription;
+
+  /// No description provided for @currentEventLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Event'**
+  String get currentEventLabel;
+
+  /// No description provided for @progressLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
+  String get progressLabel;
+
+  /// No description provided for @workoutTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout Time'**
+  String get workoutTimeLabel;
+
+  /// No description provided for @pauseTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause Time'**
+  String get pauseTimeLabel;
+
+  /// No description provided for @pauseCountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause Count'**
+  String get pauseCountLabel;
+
+  /// No description provided for @restTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rest Time'**
+  String get restTimeLabel;
+
+  /// No description provided for @totalEventTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Event Total'**
+  String get totalEventTimeLabel;
+
+  /// No description provided for @sessionTotalsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Session Totals'**
+  String get sessionTotalsLabel;
+
+  /// No description provided for @totalWorkoutLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout Total'**
+  String get totalWorkoutLabel;
+
+  /// No description provided for @totalPauseLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause Total'**
+  String get totalPauseLabel;
+
+  /// No description provided for @totalPauseCountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause Count Total'**
+  String get totalPauseCountLabel;
+
+  /// No description provided for @totalRestLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rest Total'**
+  String get totalRestLabel;
+
+  /// No description provided for @totalSessionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Session Total'**
+  String get totalSessionLabel;
+
+  /// No description provided for @completedEventsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed Events'**
+  String get completedEventsLabel;
+
+  /// No description provided for @sessionCompletedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Session Complete'**
+  String get sessionCompletedTitle;
+
+  /// No description provided for @startWorkoutButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Workout'**
+  String get startWorkoutButton;
+
+  /// No description provided for @pauseButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause'**
+  String get pauseButton;
+
+  /// No description provided for @resumeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume'**
+  String get resumeButton;
+
+  /// No description provided for @completeWorkoutButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Workout'**
+  String get completeWorkoutButton;
+
+  /// No description provided for @startRestButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Rest'**
+  String get startRestButton;
+
+  /// No description provided for @completeRestButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Rest'**
+  String get completeRestButton;
+
+  /// No description provided for @eventRun1.
+  ///
+  /// In en, this message translates to:
+  /// **'Run 1'**
+  String get eventRun1;
+
+  /// No description provided for @eventSkiErg.
+  ///
+  /// In en, this message translates to:
+  /// **'SkiErg'**
+  String get eventSkiErg;
+
+  /// No description provided for @eventRun2.
+  ///
+  /// In en, this message translates to:
+  /// **'Run 2'**
+  String get eventRun2;
+
+  /// No description provided for @eventSledPush.
+  ///
+  /// In en, this message translates to:
+  /// **'Sled Push'**
+  String get eventSledPush;
+
+  /// No description provided for @eventRun3.
+  ///
+  /// In en, this message translates to:
+  /// **'Run 3'**
+  String get eventRun3;
+
+  /// No description provided for @eventSledPull.
+  ///
+  /// In en, this message translates to:
+  /// **'Sled Pull'**
+  String get eventSledPull;
+
+  /// No description provided for @eventRun4.
+  ///
+  /// In en, this message translates to:
+  /// **'Run 4'**
+  String get eventRun4;
+
+  /// No description provided for @eventBurpeeBroadJump.
+  ///
+  /// In en, this message translates to:
+  /// **'Burpee Broad Jump'**
+  String get eventBurpeeBroadJump;
+
+  /// No description provided for @eventRun5.
+  ///
+  /// In en, this message translates to:
+  /// **'Run 5'**
+  String get eventRun5;
+
+  /// No description provided for @eventRowing.
+  ///
+  /// In en, this message translates to:
+  /// **'Rowing'**
+  String get eventRowing;
+
+  /// No description provided for @eventRun6.
+  ///
+  /// In en, this message translates to:
+  /// **'Run 6'**
+  String get eventRun6;
+
+  /// No description provided for @eventFarmersCarry.
+  ///
+  /// In en, this message translates to:
+  /// **'Farmer\'s Carry'**
+  String get eventFarmersCarry;
+
+  /// No description provided for @eventRun7.
+  ///
+  /// In en, this message translates to:
+  /// **'Run 7'**
+  String get eventRun7;
+
+  /// No description provided for @eventSandbagLunges.
+  ///
+  /// In en, this message translates to:
+  /// **'Sandbag Lunges'**
+  String get eventSandbagLunges;
+
+  /// No description provided for @eventRun8.
+  ///
+  /// In en, this message translates to:
+  /// **'Run 8'**
+  String get eventRun8;
+
+  /// No description provided for @eventWallBalls.
+  ///
+  /// In en, this message translates to:
+  /// **'Wall Balls'**
+  String get eventWallBalls;
 }
 
 class _AppLocalizationsDelegate

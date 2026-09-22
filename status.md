@@ -13,9 +13,9 @@ See `project.md` for Project Name, Repository, and Tech Stack.
 
 ## Current Work Item
 
-Work Item Name: Timer engine
+Work Item Name: Session tracking flow
 
-Description: Build a dedicated `core/timer` engine that computes workout, pause, and rest durations from timestamps (`DateTime.now().difference(...)`) so timing remains accurate across foreground and background states. Add unit tests to validate transitions and accumulated durations. Roadmap item #2 (FULL track, depends on item #1).
+Description: Build the session screen flow for all 16 fixed HYROX events in manual mode with Start/Pause/Resume/Complete/Rest controls, tracking workout time, pause time, pause count, and rest time per event. Roadmap item #3 (FULL track, depends on item #2).
 
 ---
 
@@ -257,10 +257,9 @@ If Pull Request Required = no, skip straight to `finish`.
 
 ## Current Task
 
-Timer engine implemented under `lib/core/timer/` with timestamp-based workout/pause/rest math.
-Deterministic unit tests added for transitions, pause counting, totals, and invalid-state guardrails.
-Local verification is complete: `flutter analyze` and `flutter test` both pass.
-Only CI status remains pending through the PR pipeline.
+VERIFICATION started for roadmap item #3 after implementation completion.
+Focus is now spec acceptance coverage, regression checks, and CI confirmation.
+Acceptance criteria are verified and local checks are green: flutter analyze and flutter test pass.
 
 > Keep this to 3-4 lines. Detail belongs in docs/workitems/<name>.md, not here.
 
@@ -268,7 +267,7 @@ Only CI status remains pending through the PR pipeline.
 
 ## Next Action
 
-Open PR to main so CI can run; once CI is green, mark CI Passed and proceed to delivery steps.
+Prepare PR title/description and request confirmation to run open pr so CI can execute.
 
 ---
 
