@@ -13,9 +13,9 @@ See `project.md` for Project Name, Repository, and Tech Stack.
 
 ## Current Work Item
 
-Work Item Name: Project scaffold & foundations
+Work Item Name: Timer engine
 
-Description: Stand up the Flutter Android app skeleton so every later feature has a home. Create the clean-architecture folder structure (app/, core/, features/), add and wire core dependencies (flutter_riverpod, go_router, hive/hive_flutter), initialize Hive, apply a Material 3 theme with dark mode, set up en + zh_TW ARB localization following device language (English fallback), and route to a placeholder home screen via go_router. Roadmap item #1 (FULL track, no dependencies).
+Description: Build a dedicated `core/timer` engine that computes workout, pause, and rest durations from timestamps (`DateTime.now().difference(...)`) so timing remains accurate across foreground and background states. Add unit tests to validate transitions and accumulated durations. Roadmap item #2 (FULL track, depends on item #1).
 
 ---
 
@@ -257,10 +257,10 @@ If Pull Request Required = no, skip straight to `finish`.
 
 ## Current Task
 
-Verification complete locally for item #1 against acceptance criteria.
-Flutter analyze, flutter test, and flutter build apk --debug all pass.
-Locale resolution now explicitly verifies zh_TW matching and English fallback.
-Only CI status is pending and will be confirmed by the PR pipeline.
+Timer engine implemented under `lib/core/timer/` with timestamp-based workout/pause/rest math.
+Deterministic unit tests added for transitions, pause counting, totals, and invalid-state guardrails.
+Local verification is complete: `flutter analyze` and `flutter test` both pass.
+Only CI status remains pending through the PR pipeline.
 
 > Keep this to 3-4 lines. Detail belongs in docs/workitems/<name>.md, not here.
 
@@ -268,7 +268,7 @@ Only CI status is pending and will be confirmed by the PR pipeline.
 
 ## Next Action
 
-Open PR to main so required CI can run; after CI is green, mark CI Passed and proceed to delivery steps.
+Open PR to main so CI can run; once CI is green, mark CI Passed and proceed to delivery steps.
 
 ---
 
