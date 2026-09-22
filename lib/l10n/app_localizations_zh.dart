@@ -106,6 +106,18 @@ class AppLocalizationsZh extends AppLocalizations {
   String get autoTransitionActionStartNextWorkout => '開始下一個項目';
 
   @override
+  String get recoveryPromptTitle => '要繼續先前訓練嗎？';
+
+  @override
+  String get recoveryPromptMessage => '偵測到尚未完成的訓練紀錄。你可以繼續，或捨棄並開始新訓練。';
+
+  @override
+  String get recoveryResumeButton => '繼續';
+
+  @override
+  String get recoveryDiscardButton => '捨棄';
+
+  @override
   String get eventRun1 => '跑步 1';
 
   @override
@@ -253,6 +265,18 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get autoTransitionActionStartNextWorkout => '開始下一個項目';
+
+  @override
+  String get recoveryPromptTitle => '要繼續先前訓練嗎？';
+
+  @override
+  String get recoveryPromptMessage => '偵測到尚未完成的訓練紀錄。你可以繼續，或捨棄並開始新訓練。';
+
+  @override
+  String get recoveryResumeButton => '繼續';
+
+  @override
+  String get recoveryDiscardButton => '捨棄';
 
   @override
   String get eventRun1 => '跑步 1';

@@ -3,13 +3,19 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hyrox/core/timer/timer_engine.dart';
+import 'package:hyrox/features/session/data/session_recovery_mapper.dart';
+import 'package:hyrox/features/session/data/session_recovery_models.dart';
+import 'package:hyrox/features/session/data/session_recovery_repository.dart';
 import 'package:hyrox/features/session/domain/hyrox_events.dart';
 import 'package:hyrox/features/session/domain/session_models.dart';
 
 final StateNotifierProvider<SessionController, SessionViewState>
 sessionControllerProvider =
     StateNotifierProvider<SessionController, SessionViewState>((Ref ref) {
-      return SessionController();
+      final SessionRecoveryRepository repository = ref.watch(
+        sessionRecoveryRepositoryProvider,
+      );
+      return SessionController(recoveryRepository: repository);
     });
 
 class SessionController extends StateNotifier<SessionViewState> {
@@ -32,6 +38,7 @@ class SessionController extends StateNotifier<SessionViewState> {
   SessionController({
     List<HyroxEventDefinition>? events,
     TimeProvider? timeProvider,
+    SessionRecoveryRepository? recoveryRepository,
     this.enableTicker = true,
     this.tickInterval = const Duration(seconds: 1),
     this.autoTransitionEnabled = true,
@@ -39,6 +46,11 @@ class SessionController extends StateNotifier<SessionViewState> {
     this.defaultRestDuration = const Duration(seconds: 60),
   }) : _events = events ?? hyroxEventDefinitions,
        _timeProvider = timeProvider ?? const SystemTimeProvider(),
+       _recoveryRepository =
+           recoveryRepository ?? InMemorySessionRecoveryRepository(),
+       _initialAutoTransitionEnabled = autoTransitionEnabled,
+       _initialTransitionDelay = transitionDelay,
+       _initialDefaultRestDuration = defaultRestDuration,
        super(
          SessionViewState.initial(
            events ?? hyroxEventDefinitions,
@@ -63,14 +75,19 @@ class SessionController extends StateNotifier<SessionViewState> {
 
   final List<HyroxEventDefinition> _events;
   final TimeProvider _timeProvider;
+  final SessionRecoveryRepository _recoveryRepository;
   final bool enableTicker;
   final Duration tickInterval;
   final bool autoTransitionEnabled;
   final Duration transitionDelay;
   final Duration defaultRestDuration;
+  final bool _initialAutoTransitionEnabled;
+  final Duration _initialTransitionDelay;
+  final Duration _initialDefaultRestDuration;
 
   late TimerEngine _engine;
   Timer? _ticker;
+  bool _isHydrating = false;
 
   void refresh() {
     _processAutoTransitions();
@@ -78,20 +95,90 @@ class SessionController extends StateNotifier<SessionViewState> {
     _processAutoTransitions();
   }
 
+  Future<SessionRecoveryPayload?> loadRecoveryCandidate() async {
+    final SessionRecoveryPayload? payload = await _recoveryRepository.load();
+    if (payload == null) {
+      return null;
+    }
+
+    if (payload.schemaVersion != SessionRecoveryPayload.currentSchemaVersion ||
+        payload.sessionCompleted) {
+      await _recoveryRepository.clear();
+      return null;
+    }
+
+    try {
+      SessionRecoveryMapper.hydrate(payload, events: _events);
+    } on FormatException {
+      await _recoveryRepository.clear();
+      return null;
+    }
+
+    return payload;
+  }
+
+  Future<void> restoreFromRecovery(SessionRecoveryPayload payload) async {
+    if (payload.schemaVersion != SessionRecoveryPayload.currentSchemaVersion) {
+      await _recoveryRepository.clear();
+      return;
+    }
+
+    try {
+      final SessionRecoveryHydration hydration = SessionRecoveryMapper.hydrate(
+        payload,
+        events: _events,
+      );
+
+      _isHydrating = true;
+      state = hydration.state;
+      _engine = TimerEngine.restored(
+        snapshot: hydration.timerSnapshot,
+        capturedAt: hydration.savedAt,
+        timeProvider: _timeProvider,
+      );
+      _applySnapshot(_engine.snapshot);
+      _processAutoTransitions();
+    } on FormatException {
+      await _recoveryRepository.clear();
+    } finally {
+      _isHydrating = false;
+    }
+
+    unawaited(_persistRecoveryState());
+  }
+
+  Future<void> discardRecovery() async {
+    _clearAutoTransitionSchedule();
+    _engine = TimerEngine(timeProvider: _timeProvider);
+
+    state = SessionViewState.initial(
+      _events,
+      autoTransitionEnabled: _initialAutoTransitionEnabled,
+      transitionDelay: _initialTransitionDelay,
+      defaultRestDuration: _initialDefaultRestDuration,
+    );
+    _applySnapshot(_engine.snapshot);
+
+    await _recoveryRepository.clear();
+  }
+
   void startWorkout() {
     _clearAutoTransitionSchedule();
     final TimerSnapshot snapshot = _engine.startWorkout();
     _applySnapshot(snapshot);
+    unawaited(_persistRecoveryState());
   }
 
   void startPause() {
     final TimerSnapshot snapshot = _engine.startPause();
     _applySnapshot(snapshot);
+    unawaited(_persistRecoveryState());
   }
 
   void resumeWorkout() {
     final TimerSnapshot snapshot = _engine.resumeWorkout();
     _applySnapshot(snapshot);
+    unawaited(_persistRecoveryState());
   }
 
   void completeWorkout() {
@@ -102,6 +189,8 @@ class SessionController extends StateNotifier<SessionViewState> {
     if (state.autoTransitionEnabled) {
       _scheduleAutoTransition(AutoTransitionAction.startRest);
     }
+
+    unawaited(_persistRecoveryState());
   }
 
   void startRest() {
@@ -109,6 +198,7 @@ class SessionController extends StateNotifier<SessionViewState> {
     final TimerSnapshot snapshot = _engine.startRest();
     _applySnapshot(snapshot);
     _processAutoTransitions();
+    unawaited(_persistRecoveryState());
   }
 
   void completeRest() {
@@ -118,6 +208,7 @@ class SessionController extends StateNotifier<SessionViewState> {
       snapshot,
       scheduleNextWorkout: state.autoTransitionEnabled,
     );
+    unawaited(_persistRecoveryState());
   }
 
   void setAutoTransitionEnabled(bool enabled) {
@@ -131,6 +222,7 @@ class SessionController extends StateNotifier<SessionViewState> {
     );
 
     _processAutoTransitions();
+    unawaited(_persistRecoveryState());
   }
 
   void setTransitionDelay(Duration delay) {
@@ -138,6 +230,7 @@ class SessionController extends StateNotifier<SessionViewState> {
 
     state = state.copyWith(transitionDelay: delay);
     _processAutoTransitions();
+    unawaited(_persistRecoveryState());
   }
 
   void setDefaultRestDuration(Duration duration) {
@@ -147,6 +240,7 @@ class SessionController extends StateNotifier<SessionViewState> {
 
     state = state.copyWith(defaultRestDuration: duration);
     _processAutoTransitions();
+    unawaited(_persistRecoveryState());
   }
 
   Duration autoTransitionRemaining() {
@@ -254,6 +348,7 @@ class SessionController extends StateNotifier<SessionViewState> {
       return;
     }
 
+    bool progressedAny = false;
     int guard = 0;
     while (guard < 6) {
       guard += 1;
@@ -264,6 +359,7 @@ class SessionController extends StateNotifier<SessionViewState> {
         final TimerSnapshot snapshot = _engine.completeRest();
         _completeRestAndAdvance(snapshot, scheduleNextWorkout: true);
         progressed = true;
+        progressedAny = true;
       }
 
       if (_shouldRunScheduledAutoTransition) {
@@ -274,6 +370,7 @@ class SessionController extends StateNotifier<SessionViewState> {
           final TimerSnapshot snapshot = _engine.startRest();
           _applySnapshot(snapshot);
           progressed = true;
+          progressedAny = true;
         }
 
         if (action == AutoTransitionAction.startNextWorkout &&
@@ -281,6 +378,7 @@ class SessionController extends StateNotifier<SessionViewState> {
           final TimerSnapshot snapshot = _engine.startWorkout();
           _applySnapshot(snapshot);
           progressed = true;
+          progressedAny = true;
         }
       }
 
@@ -288,6 +386,27 @@ class SessionController extends StateNotifier<SessionViewState> {
         break;
       }
     }
+
+    if (progressedAny) {
+      unawaited(_persistRecoveryState());
+    }
+  }
+
+  Future<void> _persistRecoveryState() async {
+    if (_isHydrating) {
+      return;
+    }
+
+    if (state.sessionCompleted) {
+      await _recoveryRepository.clear();
+      return;
+    }
+
+    final SessionRecoveryPayload payload = SessionRecoveryMapper.toPayload(
+      state,
+      savedAt: _timeProvider.now(),
+    );
+    await _recoveryRepository.save(payload);
   }
 
   bool get _shouldRunScheduledAutoTransition {

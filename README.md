@@ -30,13 +30,16 @@ Implemented in the app now:
   - Transition delay options: `0s`, `3s`, `5s`, `10s`
   - Configurable default rest duration
   - Auto transition enabled by default
+- Active session persistence and recovery:
+  - Hive-backed recovery payload for in-progress session state
+  - Resume/Discard prompt on app relaunch when recoverable state exists
+  - Timestamp-consistent timing after restore
 - Session UI with per-event metrics and running totals
 - Localization wiring with ARB files and locale fallback behavior
 - Unit and widget tests for timer/session flow and key UI states
 
 Not yet implemented:
 
-- Persistence/recovery of active session state
 - Background task integration + actionable notifications
 - Voice alerts (TTS)
 - Statistics, history/comparison, and export

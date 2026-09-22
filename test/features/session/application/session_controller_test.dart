@@ -2,6 +2,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hyrox/core/timer/timer_engine.dart';
 import 'package:hyrox/features/session/application/session_controller.dart';
+import 'package:hyrox/features/session/data/session_recovery_models.dart';
+import 'package:hyrox/features/session/data/session_recovery_repository.dart';
 import 'package:hyrox/features/session/domain/hyrox_events.dart';
 import 'package:hyrox/features/session/domain/session_models.dart';
 
@@ -209,5 +211,132 @@ void main() {
       SessionController.transitionDelayOptions,
       contains(const Duration(seconds: 3)),
     );
+  });
+
+  test(
+    'restoreFromRecovery keeps elapsed timing consistent after downtime',
+    () async {
+      final InMemorySessionRecoveryRepository repository =
+          InMemorySessionRecoveryRepository();
+
+      final SessionController writer = SessionController(
+        timeProvider: timeProvider,
+        enableTicker: false,
+        autoTransitionEnabled: false,
+        recoveryRepository: repository,
+      );
+      addTearDown(writer.dispose);
+
+      writer.startWorkout();
+      timeProvider.advance(const Duration(seconds: 10));
+      writer.startPause();
+
+      final SessionRecoveryPayload? payload = await writer
+          .loadRecoveryCandidate();
+      expect(payload, isNotNull);
+
+      timeProvider.advance(const Duration(seconds: 7));
+
+      final SessionController restored = SessionController(
+        timeProvider: timeProvider,
+        enableTicker: false,
+        autoTransitionEnabled: false,
+        recoveryRepository: repository,
+      );
+      addTearDown(restored.dispose);
+
+      await restored.restoreFromRecovery(payload!);
+
+      expect(restored.state.sessionState, SessionFlowState.eventPaused);
+      expect(
+        restored.state.currentEventSplit.workoutTime,
+        const Duration(seconds: 10),
+      );
+      expect(
+        restored.state.currentEventSplit.pauseTime,
+        const Duration(seconds: 7),
+      );
+      expect(restored.state.currentEventSplit.pauseCount, 0);
+    },
+  );
+
+  test(
+    'discardRecovery clears stored payload and resets session state',
+    () async {
+      final InMemorySessionRecoveryRepository repository =
+          InMemorySessionRecoveryRepository();
+
+      final SessionController persistedController = SessionController(
+        timeProvider: timeProvider,
+        enableTicker: false,
+        autoTransitionEnabled: false,
+        recoveryRepository: repository,
+      );
+      addTearDown(persistedController.dispose);
+
+      persistedController.startWorkout();
+      timeProvider.advance(const Duration(seconds: 6));
+      persistedController.startPause();
+
+      expect(await repository.load(), isNotNull);
+
+      await persistedController.discardRecovery();
+
+      expect(await repository.load(), isNull);
+      expect(persistedController.state.currentEventIndex, 0);
+      expect(persistedController.state.sessionState, SessionFlowState.idle);
+      expect(persistedController.state.totals.totalSessionTime, Duration.zero);
+    },
+  );
+
+  test('loadRecoveryCandidate clears incompatible schema payload', () async {
+    final InMemorySessionRecoveryRepository repository =
+        InMemorySessionRecoveryRepository();
+    final SessionController persistedController = SessionController(
+      timeProvider: timeProvider,
+      enableTicker: false,
+      autoTransitionEnabled: false,
+      recoveryRepository: repository,
+    );
+    addTearDown(persistedController.dispose);
+
+    final SessionRecoveryPayload payload = SessionRecoveryPayload(
+      schemaVersion: SessionRecoveryPayload.currentSchemaVersion + 1,
+      savedAtEpochMs: timeProvider.now().millisecondsSinceEpoch,
+      currentEventIndex: 0,
+      sessionState: SessionFlowState.idle.name,
+      sessionCompleted: false,
+      autoTransitionEnabled: true,
+      transitionDelayMs: const Duration(seconds: 3).inMilliseconds,
+      defaultRestDurationMs: const Duration(seconds: 60).inMilliseconds,
+      nextAutoTransitionAtEpochMs: null,
+      nextAutoTransitionAction: null,
+      timerPhase: TimerPhase.idle.name,
+      timerWorkoutMs: 0,
+      timerPauseMs: 0,
+      timerPauseCount: 0,
+      timerRestMs: 0,
+      timerWorkoutStartedAtEpochMs: null,
+      timerPauseStartedAtEpochMs: null,
+      timerRestStartedAtEpochMs: null,
+      splits: List<PersistedEventSplit>.filled(
+        hyroxEventDefinitions.length,
+        const PersistedEventSplit(
+          workoutMs: 0,
+          pauseMs: 0,
+          pauseCount: 0,
+          restMs: 0,
+          completed: false,
+        ),
+      ),
+    );
+
+    await repository.save(payload);
+
+    final SessionRecoveryPayload? loaded = await persistedController
+        .loadRecoveryCandidate();
+
+    expect(loaded, isNull);
+    expect(await repository.load(), isNull);
   });
 }

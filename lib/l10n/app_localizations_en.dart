@@ -107,6 +107,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get autoTransitionActionStartNextWorkout => 'Start Next Event';
 
   @override
+  String get recoveryPromptTitle => 'Resume Previous Session?';
+
+  @override
+  String get recoveryPromptMessage =>
+      'An unfinished session was found. Resume it or discard and start a new session.';
+
+  @override
+  String get recoveryResumeButton => 'Resume';
+
+  @override
+  String get recoveryDiscardButton => 'Discard';
+
+  @override
   String get eventRun1 => 'Run 1';
 
   @override

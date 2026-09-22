@@ -291,6 +291,30 @@ abstract class AppLocalizations {
   /// **'Start Next Event'**
   String get autoTransitionActionStartNextWorkout;
 
+  /// No description provided for @recoveryPromptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume Previous Session?'**
+  String get recoveryPromptTitle;
+
+  /// No description provided for @recoveryPromptMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'An unfinished session was found. Resume it or discard and start a new session.'**
+  String get recoveryPromptMessage;
+
+  /// No description provided for @recoveryResumeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume'**
+  String get recoveryResumeButton;
+
+  /// No description provided for @recoveryDiscardButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard'**
+  String get recoveryDiscardButton;
+
   /// No description provided for @eventRun1.
   ///
   /// In en, this message translates to:
