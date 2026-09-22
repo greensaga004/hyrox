@@ -103,10 +103,10 @@ class TimerEngine {
   }
 
   TimerSnapshot completeWorkout() {
-    _requirePhase(
-      <TimerPhase>{TimerPhase.workoutRunning, TimerPhase.eventPaused},
-      'complete workout',
-    );
+    _requirePhase(<TimerPhase>{
+      TimerPhase.workoutRunning,
+      TimerPhase.eventPaused,
+    }, 'complete workout');
 
     if (_phase == TimerPhase.workoutRunning) {
       final DateTime startedAt = _workoutStartedAt!;
