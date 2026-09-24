@@ -64,6 +64,29 @@ class AppLocalizationsZh extends AppLocalizations {
   String get sessionCompletedTitle => '訓練完成';
 
   @override
+  String get voiceWorkoutComplete => '訓練完成';
+
+  @override
+  String get voicePauseStarted => '已暫停';
+
+  @override
+  String get voicePauseEnded => '繼續訓練';
+
+  @override
+  String get voiceStartRest => '開始休息';
+
+  @override
+  String get voiceRestComplete => '休息完成';
+
+  @override
+  String get voiceSessionComplete => '全程完成';
+
+  @override
+  String voiceStartEvent(Object eventName) {
+    return '開始$eventName';
+  }
+
+  @override
   String get startWorkoutButton => '開始訓練';
 
   @override
@@ -229,6 +252,29 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get sessionCompletedTitle => '訓練完成';
+
+  @override
+  String get voiceWorkoutComplete => '訓練完成';
+
+  @override
+  String get voicePauseStarted => '已暫停';
+
+  @override
+  String get voicePauseEnded => '繼續訓練';
+
+  @override
+  String get voiceStartRest => '開始休息';
+
+  @override
+  String get voiceRestComplete => '休息完成';
+
+  @override
+  String get voiceSessionComplete => '全程完成';
+
+  @override
+  String voiceStartEvent(Object eventName) {
+    return '開始$eventName';
+  }
 
   @override
   String get startWorkoutButton => '開始訓練';

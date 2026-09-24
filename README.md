@@ -39,13 +39,16 @@ Implemented in the app now:
   - Ongoing session notification with Pause / Resume / Complete Workout actions
   - Notification action dispatch routed through session guardrails
   - Notification channel strings localized for en/zh_TW
+- Voice alerts (TTS):
+  - Localized spoken cues for key session transitions
+  - Event start announcements (for example, "Start SkiErg")
+  - Workout complete, pause started/ended, rest start/complete, and session complete cues
 - Session UI with per-event metrics and running totals
 - Localization wiring with ARB files and locale fallback behavior
 - Unit and widget tests for timer/session flow and key UI states
 
 Not yet implemented:
 
-- Voice alerts (TTS)
 - Statistics, history/comparison, and export
 
 ## Tech Stack (Current)
@@ -56,6 +59,7 @@ Not yet implemented:
 - Routing: `go_router`
 - Local storage setup: `hive`, `hive_flutter`
 - Localization: `flutter_localizations`, `intl`
+- Voice: `flutter_tts`
 
 ## Architecture
 
@@ -161,11 +165,11 @@ Completed:
 3. Session tracking flow
 4. Auto transition mode
 5. Persistence and recovery
+6. Background execution and notifications
+7. Voice alerts
 
 Next:
 
-6. Background execution and notifications
-7. Voice alerts
 8. Statistics and analytics
 9. History and comparison
 10. Settings completion

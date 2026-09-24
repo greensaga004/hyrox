@@ -13,15 +13,15 @@ See `project.md` for Project Name, Repository, and Tech Stack.
 
 ## Current Work Item
 
-Work Item Name: Background execution & notifications
+Work Item Name: Voice alerts
 
-Description: Timing survives screen-off/locked/background via foreground task, with notifications and Pause/Resume/Complete actions on key events. Roadmap item #6 (FULL track, depends on item #5).
+Description: Key session events trigger spoken TTS cues (e.g., "Workout Complete", "Start SkiErg"). Roadmap item #7 (LIGHT track, depends on item #3).
 
 ---
 
 ## Track
 
-FULL
+LIGHT
 
 Tracks:
 
@@ -226,18 +226,18 @@ If Pull Request Required = no, skip straight to `finish`.
 
 ### SPEC
 
-- [x] Business Goal
-- [x] User Story
-- [x] MVP Defined
-- [x] Scope Defined
-- [x] Acceptance Criteria
+- [ ] Business Goal
+- [ ] User Story
+- [ ] MVP Defined
+- [ ] Scope Defined
+- [ ] Acceptance Criteria
 
 ### TASK
 
-- [x] Core / Logic Tasks
-- [x] UI / Interface Tasks
-- [x] Data / Storage Tasks
-- [x] Test Tasks
+- [ ] Core / Logic Tasks
+- [ ] UI / Interface Tasks
+- [ ] Data / Storage Tasks
+- [ ] Test Tasks
 
 ### IMPLEMENTATION
 
@@ -257,10 +257,10 @@ If Pull Request Required = no, skip straight to `finish`.
 
 ## Current Task
 
-VERIFICATION in progress for roadmap item #6.
+VERIFICATION in progress for roadmap item #7.
 
-Automated verification and on-device checks confirm foreground
-notification lifecycle and background/lock timing continuity;
+TTS voice cues are wired for workout/pause/rest/session transitions,
+localized in en/zh_TW, and covered by session controller unit tests;
 `flutter analyze` and `flutter test` are green.
 
 > Keep this to 3-4 lines. Detail belongs in docs/workitems/<name>.md, not here.

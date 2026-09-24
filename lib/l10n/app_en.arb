@@ -18,6 +18,18 @@
   "totalSessionLabel": "Session Total",
   "completedEventsLabel": "Completed Events",
   "sessionCompletedTitle": "Session Complete",
+  "voiceWorkoutComplete": "Workout complete",
+  "voicePauseStarted": "Pause started",
+  "voicePauseEnded": "Pause ended",
+  "voiceStartRest": "Start rest",
+  "voiceRestComplete": "Rest complete",
+  "voiceSessionComplete": "Session complete",
+  "voiceStartEvent": "Start {eventName}",
+  "@voiceStartEvent": {
+    "placeholders": {
+      "eventName": {}
+    }
+  },
   "startWorkoutButton": "Start Workout",
   "pauseButton": "Pause",
   "resumeButton": "Resume",

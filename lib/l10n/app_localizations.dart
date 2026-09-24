@@ -207,6 +207,48 @@ abstract class AppLocalizations {
   /// **'Session Complete'**
   String get sessionCompletedTitle;
 
+  /// No description provided for @voiceWorkoutComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout complete'**
+  String get voiceWorkoutComplete;
+
+  /// No description provided for @voicePauseStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause started'**
+  String get voicePauseStarted;
+
+  /// No description provided for @voicePauseEnded.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause ended'**
+  String get voicePauseEnded;
+
+  /// No description provided for @voiceStartRest.
+  ///
+  /// In en, this message translates to:
+  /// **'Start rest'**
+  String get voiceStartRest;
+
+  /// No description provided for @voiceRestComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Rest complete'**
+  String get voiceRestComplete;
+
+  /// No description provided for @voiceSessionComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Session complete'**
+  String get voiceSessionComplete;
+
+  /// No description provided for @voiceStartEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Start {eventName}'**
+  String voiceStartEvent(Object eventName);
+
   /// No description provided for @startWorkoutButton.
   ///
   /// In en, this message translates to:

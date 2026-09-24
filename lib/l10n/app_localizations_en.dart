@@ -65,6 +65,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sessionCompletedTitle => 'Session Complete';
 
   @override
+  String get voiceWorkoutComplete => 'Workout complete';
+
+  @override
+  String get voicePauseStarted => 'Pause started';
+
+  @override
+  String get voicePauseEnded => 'Pause ended';
+
+  @override
+  String get voiceStartRest => 'Start rest';
+
+  @override
+  String get voiceRestComplete => 'Rest complete';
+
+  @override
+  String get voiceSessionComplete => 'Session complete';
+
+  @override
+  String voiceStartEvent(Object eventName) {
+    return 'Start $eventName';
+  }
+
+  @override
   String get startWorkoutButton => 'Start Workout';
 
   @override

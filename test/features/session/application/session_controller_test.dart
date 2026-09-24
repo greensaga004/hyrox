@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hyrox/core/background/session_background_service.dart';
 import 'package:hyrox/core/notifications/session_notification_service.dart';
 import 'package:hyrox/core/timer/timer_engine.dart';
+import 'package:hyrox/core/tts/session_voice_alert_service.dart';
 import 'package:hyrox/features/session/application/session_controller.dart';
 import 'package:hyrox/features/session/data/session_recovery_models.dart';
 import 'package:hyrox/features/session/data/session_recovery_repository.dart';
@@ -68,6 +69,27 @@ class FakeSessionNotificationService implements SessionNotificationService {
   Future<void> showOrUpdate(SessionNotificationSnapshot snapshot) async {
     showCalls += 1;
     lastSnapshot = snapshot;
+  }
+}
+
+class FakeSessionVoiceAlertService implements SessionVoiceAlertService {
+  bool initialized = false;
+  int stopCalls = 0;
+  final List<String> spoken = <String>[];
+
+  @override
+  Future<void> announce(String message) async {
+    spoken.add(message);
+  }
+
+  @override
+  Future<void> initialize() async {
+    initialized = true;
+  }
+
+  @override
+  Future<void> stop() async {
+    stopCalls += 1;
   }
 }
 
@@ -507,4 +529,54 @@ void main() {
       );
     },
   );
+
+  test('voice alerts announce key session transitions', () async {
+    final FakeSessionVoiceAlertService voiceAlerts =
+        FakeSessionVoiceAlertService();
+    final List<HyroxEventDefinition> twoEvents = <HyroxEventDefinition>[
+      const HyroxEventDefinition(order: 1, station: HyroxStation.run1),
+      const HyroxEventDefinition(order: 2, station: HyroxStation.skiErg),
+    ];
+
+    final SessionController voiceController = SessionController(
+      events: twoEvents,
+      timeProvider: timeProvider,
+      enableTicker: false,
+      autoTransitionEnabled: false,
+      voiceAlertService: voiceAlerts,
+    );
+    addTearDown(voiceController.dispose);
+
+    await Future<void>.delayed(Duration.zero);
+    expect(voiceAlerts.initialized, isTrue);
+
+    voiceController.startWorkout();
+    voiceController.startPause();
+    voiceController.resumeWorkout();
+    voiceController.completeWorkout();
+    voiceController.startRest();
+    voiceController.completeRest();
+
+    voiceController.startWorkout();
+    voiceController.completeWorkout();
+    voiceController.startRest();
+    voiceController.completeRest();
+
+    await Future<void>.delayed(Duration.zero);
+
+    expect(voiceController.state.sessionCompleted, isTrue);
+    expect(voiceAlerts.spoken, <String>[
+      'Start Run 1',
+      'Pause started',
+      'Pause ended',
+      'Workout complete',
+      'Start rest',
+      'Rest complete',
+      'Start SkiErg',
+      'Workout complete',
+      'Start rest',
+      'Rest complete',
+      'Session complete',
+    ]);
+  });
 }
