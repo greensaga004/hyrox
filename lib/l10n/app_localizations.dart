@@ -315,6 +315,18 @@ abstract class AppLocalizations {
   /// **'Discard'**
   String get recoveryDiscardButton;
 
+  /// No description provided for @notificationChannelName.
+  ///
+  /// In en, this message translates to:
+  /// **'Session Tracking'**
+  String get notificationChannelName;
+
+  /// No description provided for @notificationChannelDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Background tracking controls for active HYROX sessions.'**
+  String get notificationChannelDescription;
+
   /// No description provided for @eventRun1.
   ///
   /// In en, this message translates to:

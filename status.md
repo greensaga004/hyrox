@@ -13,9 +13,9 @@ See `project.md` for Project Name, Repository, and Tech Stack.
 
 ## Current Work Item
 
-Work Item Name: Persistence & recovery
+Work Item Name: Background execution & notifications
 
-Description: Active session and splits persist to Hive and restore after restart/crash/reboot via a Resume / Discard prompt. Roadmap item #5 (FULL track, depends on item #3).
+Description: Timing survives screen-off/locked/background via foreground task, with notifications and Pause/Resume/Complete actions on key events. Roadmap item #6 (FULL track, depends on item #5).
 
 ---
 
@@ -257,10 +257,11 @@ If Pull Request Required = no, skip straight to `finish`.
 
 ## Current Task
 
-VERIFICATION stage started for roadmap item #5 on branch feature/persistence-recovery.
+VERIFICATION in progress for roadmap item #6.
 
-Local verification completed: acceptance criteria are checked against
-implementation and test evidence, and analyze/test are green.
+Automated verification and on-device checks confirm foreground
+notification lifecycle and background/lock timing continuity;
+`flutter analyze` and `flutter test` are green.
 
 > Keep this to 3-4 lines. Detail belongs in docs/workitems/<name>.md, not here.
 
@@ -268,7 +269,8 @@ implementation and test evidence, and analyze/test are green.
 
 ## Next Action
 
-Prepare PR title/description and request approval to run open pr for CI.
+Prepare PR title/description and request approval to run open pr
+for CI execution.
 
 ---
 

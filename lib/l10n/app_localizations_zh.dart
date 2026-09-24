@@ -118,6 +118,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get recoveryDiscardButton => '捨棄';
 
   @override
+  String get notificationChannelName => '訓練追蹤';
+
+  @override
+  String get notificationChannelDescription => '提供進行中 HYROX 訓練的背景追蹤與控制通知。';
+
+  @override
   String get eventRun1 => '跑步 1';
 
   @override
@@ -277,6 +283,12 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get recoveryDiscardButton => '捨棄';
+
+  @override
+  String get notificationChannelName => '訓練追蹤';
+
+  @override
+  String get notificationChannelDescription => '提供進行中 HYROX 訓練的背景追蹤與控制通知。';
 
   @override
   String get eventRun1 => '跑步 1';

@@ -1,13 +1,18 @@
 // features/session/application/session_controller.dart
 import 'dart:async';
+import 'dart:ui';
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hyrox/core/background/session_background_service.dart';
+import 'package:hyrox/core/notifications/session_notification_service.dart';
 import 'package:hyrox/core/timer/timer_engine.dart';
 import 'package:hyrox/features/session/data/session_recovery_mapper.dart';
 import 'package:hyrox/features/session/data/session_recovery_models.dart';
 import 'package:hyrox/features/session/data/session_recovery_repository.dart';
 import 'package:hyrox/features/session/domain/hyrox_events.dart';
 import 'package:hyrox/features/session/domain/session_models.dart';
+import 'package:hyrox/l10n/app_localizations.dart';
 
 final StateNotifierProvider<SessionController, SessionViewState>
 sessionControllerProvider =
@@ -15,7 +20,17 @@ sessionControllerProvider =
       final SessionRecoveryRepository repository = ref.watch(
         sessionRecoveryRepositoryProvider,
       );
-      return SessionController(recoveryRepository: repository);
+      final SessionBackgroundService backgroundService = ref.watch(
+        sessionBackgroundServiceProvider,
+      );
+      final SessionNotificationService notificationService = ref.watch(
+        sessionNotificationServiceProvider,
+      );
+      return SessionController(
+        recoveryRepository: repository,
+        backgroundService: backgroundService,
+        notificationService: notificationService,
+      );
     });
 
 class SessionController extends StateNotifier<SessionViewState> {
@@ -39,6 +54,8 @@ class SessionController extends StateNotifier<SessionViewState> {
     List<HyroxEventDefinition>? events,
     TimeProvider? timeProvider,
     SessionRecoveryRepository? recoveryRepository,
+    SessionBackgroundService? backgroundService,
+    SessionNotificationService? notificationService,
     this.enableTicker = true,
     this.tickInterval = const Duration(seconds: 1),
     this.autoTransitionEnabled = true,
@@ -48,6 +65,9 @@ class SessionController extends StateNotifier<SessionViewState> {
        _timeProvider = timeProvider ?? const SystemTimeProvider(),
        _recoveryRepository =
            recoveryRepository ?? InMemorySessionRecoveryRepository(),
+       _backgroundService = backgroundService ?? NoopSessionBackgroundService(),
+       _notificationService =
+           notificationService ?? const NoopSessionNotificationService(),
        _initialAutoTransitionEnabled = autoTransitionEnabled,
        _initialTransitionDelay = transitionDelay,
        _initialDefaultRestDuration = defaultRestDuration,
@@ -71,11 +91,14 @@ class SessionController extends StateNotifier<SessionViewState> {
     _engine = TimerEngine(timeProvider: _timeProvider);
     _applySnapshot(_engine.snapshot);
     _startTicker();
+    unawaited(_initializeRuntimeIntegrations());
   }
 
   final List<HyroxEventDefinition> _events;
   final TimeProvider _timeProvider;
   final SessionRecoveryRepository _recoveryRepository;
+  final SessionBackgroundService _backgroundService;
+  final SessionNotificationService _notificationService;
   final bool enableTicker;
   final Duration tickInterval;
   final bool autoTransitionEnabled;
@@ -87,12 +110,17 @@ class SessionController extends StateNotifier<SessionViewState> {
 
   late TimerEngine _engine;
   Timer? _ticker;
+  StreamSubscription<SessionNotificationAction>? _notificationActions;
   bool _isHydrating = false;
+  bool _runtimeReady = false;
+  bool _runtimeSyncInProgress = false;
+  bool _runtimeSyncQueued = false;
 
   void refresh() {
     _processAutoTransitions();
     _applySnapshot(_engine.snapshot);
     _processAutoTransitions();
+    unawaited(_syncRuntimeIntegrations());
   }
 
   Future<SessionRecoveryPayload?> loadRecoveryCandidate() async {
@@ -275,6 +303,7 @@ class SessionController extends StateNotifier<SessionViewState> {
         timerSnapshot: snapshot,
         clearAutoTransition: true,
       );
+      unawaited(_syncRuntimeIntegrations());
       return;
     }
 
@@ -290,11 +319,17 @@ class SessionController extends StateNotifier<SessionViewState> {
     if (scheduleNextWorkout && state.autoTransitionEnabled) {
       _scheduleAutoTransition(AutoTransitionAction.startNextWorkout);
     }
+
+    unawaited(_syncRuntimeIntegrations());
   }
 
   @override
   void dispose() {
+    _runtimeReady = false;
+    _runtimeSyncQueued = false;
     _ticker?.cancel();
+    unawaited(_notificationActions?.cancel());
+    unawaited(_shutdownRuntimeIntegrations());
     super.dispose();
   }
 
@@ -323,6 +358,7 @@ class SessionController extends StateNotifier<SessionViewState> {
       timerSnapshot: snapshot,
       sessionState: _mapPhase(snapshot.phase),
     );
+    unawaited(_syncRuntimeIntegrations());
   }
 
   void _scheduleAutoTransition(AutoTransitionAction action) {
@@ -452,6 +488,168 @@ class SessionController extends StateNotifier<SessionViewState> {
         return SessionFlowState.restRunning;
       case TimerPhase.completed:
         return SessionFlowState.completed;
+    }
+  }
+
+  Future<void> _initializeRuntimeIntegrations() async {
+    await _backgroundService.initialize();
+    if (!mounted) {
+      return;
+    }
+
+    await _notificationService.initialize();
+    if (!mounted) {
+      return;
+    }
+
+    _notificationActions = _notificationService.actions.listen(
+      _handleNotificationAction,
+    );
+    _runtimeReady = true;
+    await _syncRuntimeIntegrations();
+  }
+
+  Future<void> _handleNotificationAction(
+    SessionNotificationAction action,
+  ) async {
+    if (!mounted) {
+      return;
+    }
+
+    try {
+      switch (action) {
+        case SessionNotificationAction.pause:
+          if (state.canStartPause) {
+            startPause();
+          }
+          return;
+        case SessionNotificationAction.resume:
+          if (state.canResumeWorkout) {
+            resumeWorkout();
+          }
+          return;
+        case SessionNotificationAction.completeWorkout:
+          if (state.canCompleteWorkout) {
+            completeWorkout();
+          }
+          return;
+      }
+    } on StateError {
+      // Ignore stale action taps that race with phase changes.
+    }
+  }
+
+  bool get _hasActiveSession {
+    if (state.sessionCompleted) {
+      return false;
+    }
+
+    if (state.sessionState != SessionFlowState.idle) {
+      return true;
+    }
+
+    if (state.currentEventIndex > 0) {
+      return true;
+    }
+
+    return state.splits.any((EventSplit split) {
+      return split.completed ||
+          split.workoutTime > Duration.zero ||
+          split.pauseTime > Duration.zero ||
+          split.restTime > Duration.zero ||
+          split.pauseCount > 0;
+    });
+  }
+
+  SessionNotificationSnapshot _buildNotificationSnapshot() {
+    final AppLocalizations l10n = _notificationLocalizations();
+    final EventSplit split = state.currentEventSplit;
+    final int eventPosition = state.currentEventIndex + 1;
+    final String title =
+        '${l10n.appTitle} • ${l10n.progressLabel} $eventPosition/${state.eventCount}';
+    final String body =
+        '${l10n.workoutTimeLabel} ${_formatDuration(split.workoutTime)} | ${l10n.pauseTimeLabel} ${_formatDuration(split.pauseTime)} | ${l10n.restTimeLabel} ${_formatDuration(split.restTime)}';
+
+    return SessionNotificationSnapshot(
+      title: title,
+      body: body,
+      pauseActionLabel: l10n.pauseButton,
+      resumeActionLabel: l10n.resumeButton,
+      completeWorkoutActionLabel: l10n.completeWorkoutButton,
+      showPauseAction: state.canStartPause,
+      showResumeAction: state.canResumeWorkout,
+      showCompleteWorkoutAction: state.canCompleteWorkout,
+    );
+  }
+
+  AppLocalizations _notificationLocalizations() {
+    final Locale locale = PlatformDispatcher.instance.locale;
+    try {
+      return lookupAppLocalizations(locale);
+    } on FlutterError {
+      return lookupAppLocalizations(const Locale('en'));
+    }
+  }
+
+  static String _formatDuration(Duration value) {
+    final int hours = value.inHours;
+    final int minutes = value.inMinutes.remainder(60);
+    final int seconds = value.inSeconds.remainder(60);
+
+    if (hours > 0) {
+      return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+    }
+
+    return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+  }
+
+  Future<void> _syncRuntimeIntegrations() async {
+    if (!mounted || !_runtimeReady) {
+      return;
+    }
+
+    if (_runtimeSyncInProgress) {
+      _runtimeSyncQueued = true;
+      return;
+    }
+
+    _runtimeSyncInProgress = true;
+    try {
+      do {
+        _runtimeSyncQueued = false;
+
+        if (!mounted || !_runtimeReady) {
+          return;
+        }
+
+        if (_hasActiveSession) {
+          if (!_backgroundService.isRunning) {
+            await _backgroundService.start();
+          }
+          if (!mounted) {
+            return;
+          }
+          await _notificationService.showOrUpdate(_buildNotificationSnapshot());
+        } else {
+          await _notificationService.clear();
+          if (_backgroundService.isRunning) {
+            await _backgroundService.stop();
+          }
+        }
+      } while (_runtimeSyncQueued && mounted && _runtimeReady);
+    } finally {
+      _runtimeSyncInProgress = false;
+    }
+  }
+
+  Future<void> _shutdownRuntimeIntegrations() async {
+    if (!mounted) {
+      return;
+    }
+
+    await _notificationService.clear();
+    if (_backgroundService.isRunning) {
+      await _backgroundService.stop();
     }
   }
 }

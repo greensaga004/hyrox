@@ -120,6 +120,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recoveryDiscardButton => 'Discard';
 
   @override
+  String get notificationChannelName => 'Session Tracking';
+
+  @override
+  String get notificationChannelDescription =>
+      'Background tracking controls for active HYROX sessions.';
+
+  @override
   String get eventRun1 => 'Run 1';
 
   @override

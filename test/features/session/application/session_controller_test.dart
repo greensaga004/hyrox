@@ -1,11 +1,75 @@
 // test/features/session/application/session_controller_test.dart
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hyrox/core/background/session_background_service.dart';
+import 'package:hyrox/core/notifications/session_notification_service.dart';
 import 'package:hyrox/core/timer/timer_engine.dart';
 import 'package:hyrox/features/session/application/session_controller.dart';
 import 'package:hyrox/features/session/data/session_recovery_models.dart';
 import 'package:hyrox/features/session/data/session_recovery_repository.dart';
 import 'package:hyrox/features/session/domain/hyrox_events.dart';
 import 'package:hyrox/features/session/domain/session_models.dart';
+
+class FakeSessionBackgroundService implements SessionBackgroundService {
+  bool initialized = false;
+  bool started = false;
+  int startCalls = 0;
+  int stopCalls = 0;
+
+  @override
+  bool get isRunning => started;
+
+  @override
+  Future<void> initialize() async {
+    initialized = true;
+  }
+
+  @override
+  Future<void> start() async {
+    started = true;
+    startCalls += 1;
+  }
+
+  @override
+  Future<void> stop() async {
+    started = false;
+    stopCalls += 1;
+  }
+}
+
+class FakeSessionNotificationService implements SessionNotificationService {
+  bool initialized = false;
+  int showCalls = 0;
+  int clearCalls = 0;
+  SessionNotificationSnapshot? lastSnapshot;
+
+  final StreamController<SessionNotificationAction> _actions =
+      StreamController<SessionNotificationAction>.broadcast();
+
+  @override
+  Stream<SessionNotificationAction> get actions => _actions.stream;
+
+  @override
+  Future<void> clear() async {
+    clearCalls += 1;
+  }
+
+  void emit(SessionNotificationAction action) {
+    _actions.add(action);
+  }
+
+  @override
+  Future<void> initialize() async {
+    initialized = true;
+  }
+
+  @override
+  Future<void> showOrUpdate(SessionNotificationSnapshot snapshot) async {
+    showCalls += 1;
+    lastSnapshot = snapshot;
+  }
+}
 
 class FakeTimeProvider implements TimeProvider {
   FakeTimeProvider(this._current);
@@ -339,4 +403,108 @@ void main() {
     expect(loaded, isNull);
     expect(await repository.load(), isNull);
   });
+
+  test(
+    'runtime services start on active session and stop after completion',
+    () async {
+      final FakeSessionBackgroundService background =
+          FakeSessionBackgroundService();
+      final FakeSessionNotificationService notifications =
+          FakeSessionNotificationService();
+      final List<HyroxEventDefinition> oneEvent = <HyroxEventDefinition>[
+        const HyroxEventDefinition(order: 1, station: HyroxStation.run1),
+      ];
+
+      final SessionController runtimeController = SessionController(
+        events: oneEvent,
+        timeProvider: timeProvider,
+        enableTicker: false,
+        autoTransitionEnabled: false,
+        backgroundService: background,
+        notificationService: notifications,
+      );
+      addTearDown(runtimeController.dispose);
+
+      await Future<void>.delayed(Duration.zero);
+
+      expect(background.initialized, isTrue);
+      expect(notifications.initialized, isTrue);
+
+      final int initialStartCalls = background.startCalls;
+      final int initialShowCalls = notifications.showCalls;
+
+      runtimeController.startWorkout();
+      await Future<void>.delayed(Duration.zero);
+
+      expect(
+        runtimeController.state.sessionState,
+        SessionFlowState.workoutRunning,
+      );
+      expect(background.startCalls, greaterThan(initialStartCalls));
+      expect(notifications.showCalls, greaterThan(initialShowCalls));
+
+      runtimeController.completeWorkout();
+      runtimeController.startRest();
+      runtimeController.completeRest();
+      await Future<void>.delayed(Duration.zero);
+
+      expect(runtimeController.state.sessionCompleted, isTrue);
+      expect(background.isRunning, isFalse);
+      expect(background.stopCalls, greaterThan(0));
+      expect(notifications.clearCalls, greaterThan(0));
+    },
+  );
+
+  test(
+    'notification actions dispatch to controller with phase guardrails',
+    () async {
+      final FakeSessionBackgroundService background =
+          FakeSessionBackgroundService();
+      final FakeSessionNotificationService notifications =
+          FakeSessionNotificationService();
+
+      final SessionController runtimeController = SessionController(
+        timeProvider: timeProvider,
+        enableTicker: false,
+        autoTransitionEnabled: false,
+        backgroundService: background,
+        notificationService: notifications,
+      );
+      addTearDown(runtimeController.dispose);
+
+      await Future<void>.delayed(Duration.zero);
+
+      notifications.emit(SessionNotificationAction.pause);
+      await Future<void>.delayed(Duration.zero);
+      expect(runtimeController.state.sessionState, SessionFlowState.idle);
+
+      runtimeController.startWorkout();
+      await Future<void>.delayed(Duration.zero);
+      expect(
+        runtimeController.state.sessionState,
+        SessionFlowState.workoutRunning,
+      );
+
+      notifications.emit(SessionNotificationAction.pause);
+      await Future<void>.delayed(Duration.zero);
+      expect(
+        runtimeController.state.sessionState,
+        SessionFlowState.eventPaused,
+      );
+
+      notifications.emit(SessionNotificationAction.resume);
+      await Future<void>.delayed(Duration.zero);
+      expect(
+        runtimeController.state.sessionState,
+        SessionFlowState.workoutRunning,
+      );
+
+      notifications.emit(SessionNotificationAction.completeWorkout);
+      await Future<void>.delayed(Duration.zero);
+      expect(
+        runtimeController.state.sessionState,
+        SessionFlowState.workoutCompleted,
+      );
+    },
+  );
 }
