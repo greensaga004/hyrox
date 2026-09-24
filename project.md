@@ -191,7 +191,7 @@ Constraints / Non-Functional Requirements:
 | 7 | Voice alerts | Key session events trigger spoken TTS cues (e.g. "Workout Complete", "Start SkiErg") | Low | LIGHT | 3 | DONE |
 | 8 | Statistics & analytics | Statistics screen shows session totals, fastest/slowest/most-interrupted/longest-pause events, run analysis, fatigue index, and charts | Medium | FULL | 3 | DONE |
 | 9 | History & comparison | History screen lists completed sessions with detail view and session comparison | Medium | LIGHT | 5 | TODO |
-| 10 | Settings | Settings screen switches language (persisted, no restart), shows app name/version/build, and lists future placeholders | Medium | LIGHT | 1 | TODO |
+| 10 | Settings | Settings screen switches language (persisted, no restart), shows app name/version/build, and lists future placeholders | Medium | LIGHT | 1 | DONE |
 | 11 | Export & share | A completed session exports to CSV, JSON, Excel, and PDF and can be shared | Low | LIGHT | 8 | TODO |
 
 Definition of Done: one line describing a distinct user-visible outcome; no two rows should share it.

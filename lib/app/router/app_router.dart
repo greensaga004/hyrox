@@ -1,6 +1,7 @@
 // app/router/app_router.dart
 import 'package:go_router/go_router.dart';
 import 'package:hyrox/features/session/presentation/screens/session_screen.dart';
+import 'package:hyrox/features/settings/presentation/screens/settings_screen.dart';
 import 'package:hyrox/features/statistics/presentation/screens/statistics_screen.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -9,6 +10,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/statistics',
       builder: (context, state) => const StatisticsScreen(),
+    ),
+    GoRoute(
+      path: '/settings',
+      builder: (context, state) => const SettingsScreen(),
     ),
   ],
 );

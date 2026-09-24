@@ -143,7 +143,55 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recoveryDiscardButton => 'Discard';
 
   @override
+  String get viewSettingsTooltip => 'Open settings';
+
+  @override
   String get viewStatisticsTooltip => 'View statistics';
+
+  @override
+  String get settingsTitle => 'Settings';
+
+  @override
+  String get settingsLanguageSectionTitle => 'Language';
+
+  @override
+  String get languageTraditionalChineseLabel => 'Traditional Chinese';
+
+  @override
+  String get languageEnglishLabel => 'English';
+
+  @override
+  String get settingsAppInfoSectionTitle => 'Application Information';
+
+  @override
+  String get settingsAppNameLabel => 'Application Name';
+
+  @override
+  String get settingsVersionLabel => 'Version';
+
+  @override
+  String get settingsBuildNumberLabel => 'Build Number';
+
+  @override
+  String get settingsFutureSectionTitle => 'Future Settings';
+
+  @override
+  String get settingsFutureAutoTransition => 'Auto Transition';
+
+  @override
+  String get settingsFutureVoiceAlerts => 'Voice Alerts';
+
+  @override
+  String get settingsFutureNotificationSettings => 'Notification Settings';
+
+  @override
+  String get settingsFutureDefaultRestDuration => 'Default Rest Duration';
+
+  @override
+  String get settingsFutureTargetFinishTime => 'Target Finish Time';
+
+  @override
+  String get settingsComingSoonLabel => 'Coming soon';
 
   @override
   String get statisticsTitle => 'Statistics & Analytics';

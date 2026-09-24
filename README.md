@@ -46,6 +46,12 @@ Implemented in the app now:
 - Statistics and analytics:
   - Session totals, event highlights, run analysis, and fatigue index
   - Charts for workout, pause, rest, and cumulative time trends
+- Settings screen:
+  - Language switch between English and Traditional Chinese
+  - Persisted language preference (`selectedLanguage`) applied immediately
+  - App information display (application name, version, build number)
+  - Future-setting placeholders for upcoming options
+  - Reachable from the session screen app bar settings icon
 - Session UI with per-event metrics and running totals
 - Localization wiring with ARB files and locale fallback behavior
 - Unit and widget tests for timer/session flow and key UI states
@@ -64,6 +70,7 @@ Not yet implemented:
 - Localization: `flutter_localizations`, `intl`
 - Voice: `flutter_tts`
 - Charts: `fl_chart`
+- App metadata: `package_info_plus`
 
 ## Architecture
 
@@ -172,11 +179,11 @@ Completed:
 6. Background execution and notifications
 7. Voice alerts
 8. Statistics and analytics
+10. Settings completion
 
 Next:
 
 9. History and comparison
-10. Settings completion
 11. Export and share
 
 ## Workflow Docs

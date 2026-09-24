@@ -13,15 +13,15 @@ See `project.md` for Project Name, Repository, and Tech Stack.
 
 ## Current Work Item
 
-Work Item Name: Statistics & analytics
+Work Item Name: Settings
 
-Description: Statistics screen shows session totals, fastest/slowest/most-interrupted/longest-pause events, run analysis, fatigue index, and charts. Roadmap item #8 (FULL track, depends on item #3).
+Description: Settings screen switches language (persisted, no restart), shows app name/version/build, and lists future placeholders. Roadmap item #10 (LIGHT track, depends on item #1).
 
 ---
 
 ## Track
 
-FULL
+LIGHT
 
 Tracks:
 
@@ -226,18 +226,18 @@ If Pull Request Required = no, skip straight to `finish`.
 
 ### SPEC
 
-- [x] Business Goal
-- [x] User Story
-- [x] MVP Defined
-- [x] Scope Defined
-- [x] Acceptance Criteria
+- [ ] Business Goal
+- [ ] User Story
+- [ ] MVP Defined
+- [ ] Scope Defined
+- [ ] Acceptance Criteria
 
 ### TASK
 
-- [x] Core / Logic Tasks
-- [x] UI / Interface Tasks
-- [x] Data / Storage Tasks
-- [x] Test Tasks
+- [ ] Core / Logic Tasks
+- [ ] UI / Interface Tasks
+- [ ] Data / Storage Tasks
+- [ ] Test Tasks
 
 ### IMPLEMENTATION
 
@@ -257,11 +257,11 @@ If Pull Request Required = no, skip straight to `finish`.
 
 ## Current Task
 
-VERIFICATION in progress for roadmap item #8 on branch
-feature/statistics-analytics.
+VERIFICATION in progress for roadmap item #10 on branch feature/settings.
 
-Statistics/analytics implementation is complete and locally validated with
-`flutter analyze` and `flutter test`; awaiting CI via PR before completion.
+Settings language persistence (no restart), app info display, and placeholders
+are implemented and wired. Local checks passed: `flutter analyze` and
+`flutter test`.
 
 > Keep this to 3-4 lines. Detail belongs in docs/workitems/<name>.md, not here.
 
@@ -269,8 +269,7 @@ Statistics/analytics implementation is complete and locally validated with
 
 ## Next Action
 
-Prepare PR title/description and request approval to run `open pr`
-for CI execution.
+Update README notes for Settings and prepare PR details for CI execution.
 
 ---
 
