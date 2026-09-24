@@ -187,7 +187,7 @@ Constraints / Non-Functional Requirements:
 | 3 | Session tracking flow | Session screen runs all 16 fixed events with Start/Pause/Resume/Complete/Rest, tracking workout time, pause time, pause count, and rest time (manual mode) | High | FULL | 2 | DONE |
 | 4 | Auto transition mode | Completing a workout auto-starts rest and the next event using the configurable transition delay and default rest duration | Medium | LIGHT | 3 | DONE |
 | 5 | Persistence & recovery | Active session and splits persist to Hive and restore after restart/crash/reboot via a Resume / Discard prompt | High | FULL | 3 | DONE |
-| 6 | Background execution & notifications | Timing survives screen-off/locked/backgrounded via foreground task, with notifications (and Pause/Resume/Complete actions) on key events | High | FULL | 5 | TODO |
+| 6 | Background execution & notifications | Timing survives screen-off/locked/backgrounded via foreground task, with notifications (and Pause/Resume/Complete actions) on key events | High | FULL | 5 | DONE |
 | 7 | Voice alerts | Key session events trigger spoken TTS cues (e.g. "Workout Complete", "Start SkiErg") | Low | LIGHT | 3 | TODO |
 | 8 | Statistics & analytics | Statistics screen shows session totals, fastest/slowest/most-interrupted/longest-pause events, run analysis, fatigue index, and charts | Medium | FULL | 3 | TODO |
 | 9 | History & comparison | History screen lists completed sessions with detail view and session comparison | Medium | LIGHT | 5 | TODO |
