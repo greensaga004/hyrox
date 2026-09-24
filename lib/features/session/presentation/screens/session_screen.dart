@@ -1,6 +1,7 @@
 // features/session/presentation/screens/session_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hyrox/core/extensions/hyrox_station_localization.dart';
 import 'package:hyrox/features/session/application/session_controller.dart';
 import 'package:hyrox/features/session/data/session_recovery_models.dart';
@@ -90,7 +91,18 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
     final SessionTotals totals = state.totals;
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.appTitle)),
+      appBar: AppBar(
+        title: Text(l10n.appTitle),
+        actions: <Widget>[
+          IconButton(
+            tooltip: l10n.viewStatisticsTooltip,
+            onPressed: () {
+              context.push('/statistics');
+            },
+            icon: const Icon(Icons.insights_outlined),
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

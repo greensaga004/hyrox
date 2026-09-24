@@ -357,6 +357,132 @@ abstract class AppLocalizations {
   /// **'Discard'**
   String get recoveryDiscardButton;
 
+  /// No description provided for @viewStatisticsTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'View statistics'**
+  String get viewStatisticsTooltip;
+
+  /// No description provided for @statisticsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics & Analytics'**
+  String get statisticsTitle;
+
+  /// No description provided for @statisticsUnavailableTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics unavailable'**
+  String get statisticsUnavailableTitle;
+
+  /// No description provided for @statisticsUnavailableMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete a session to unlock statistics.'**
+  String get statisticsUnavailableMessage;
+
+  /// No description provided for @eventHighlightsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Event Highlights'**
+  String get eventHighlightsTitle;
+
+  /// No description provided for @runAnalysisTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Run Analysis'**
+  String get runAnalysisTitle;
+
+  /// No description provided for @fastestEventLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Fastest Event'**
+  String get fastestEventLabel;
+
+  /// No description provided for @slowestEventLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Slowest Event'**
+  String get slowestEventLabel;
+
+  /// No description provided for @mostInterruptedEventLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Most Interrupted Event'**
+  String get mostInterruptedEventLabel;
+
+  /// No description provided for @longestPauseEventLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Longest Pause Event'**
+  String get longestPauseEventLabel;
+
+  /// No description provided for @fastestRunLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Fastest Run'**
+  String get fastestRunLabel;
+
+  /// No description provided for @slowestRunLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Slowest Run'**
+  String get slowestRunLabel;
+
+  /// No description provided for @averageRunTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Average Run Time'**
+  String get averageRunTimeLabel;
+
+  /// No description provided for @fatigueIndexLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Fatigue Index'**
+  String get fatigueIndexLabel;
+
+  /// No description provided for @fatigueIndexFormulaLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Average Last 4 - Average First 4'**
+  String get fatigueIndexFormulaLabel;
+
+  /// No description provided for @averagePauseTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Average Pause Time'**
+  String get averagePauseTimeLabel;
+
+  /// No description provided for @averageRestTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Average Rest Time'**
+  String get averageRestTimeLabel;
+
+  /// No description provided for @workoutDurationChartTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout Duration by Event'**
+  String get workoutDurationChartTitle;
+
+  /// No description provided for @pauseDurationChartTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause Duration by Event'**
+  String get pauseDurationChartTitle;
+
+  /// No description provided for @restDurationChartTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rest Duration by Event'**
+  String get restDurationChartTitle;
+
+  /// No description provided for @cumulativeTimeChartTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cumulative Time by Event'**
+  String get cumulativeTimeChartTitle;
+
   /// No description provided for @notificationChannelName.
   ///
   /// In en, this message translates to:

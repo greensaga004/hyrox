@@ -143,6 +143,70 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recoveryDiscardButton => 'Discard';
 
   @override
+  String get viewStatisticsTooltip => 'View statistics';
+
+  @override
+  String get statisticsTitle => 'Statistics & Analytics';
+
+  @override
+  String get statisticsUnavailableTitle => 'Statistics unavailable';
+
+  @override
+  String get statisticsUnavailableMessage =>
+      'Complete a session to unlock statistics.';
+
+  @override
+  String get eventHighlightsTitle => 'Event Highlights';
+
+  @override
+  String get runAnalysisTitle => 'Run Analysis';
+
+  @override
+  String get fastestEventLabel => 'Fastest Event';
+
+  @override
+  String get slowestEventLabel => 'Slowest Event';
+
+  @override
+  String get mostInterruptedEventLabel => 'Most Interrupted Event';
+
+  @override
+  String get longestPauseEventLabel => 'Longest Pause Event';
+
+  @override
+  String get fastestRunLabel => 'Fastest Run';
+
+  @override
+  String get slowestRunLabel => 'Slowest Run';
+
+  @override
+  String get averageRunTimeLabel => 'Average Run Time';
+
+  @override
+  String get fatigueIndexLabel => 'Fatigue Index';
+
+  @override
+  String get fatigueIndexFormulaLabel => 'Average Last 4 - Average First 4';
+
+  @override
+  String get averagePauseTimeLabel => 'Average Pause Time';
+
+  @override
+  String get averageRestTimeLabel => 'Average Rest Time';
+
+  @override
+  String get workoutDurationChartTitle => 'Workout Duration by Event';
+
+  @override
+  String get pauseDurationChartTitle => 'Pause Duration by Event';
+
+  @override
+  String get restDurationChartTitle => 'Rest Duration by Event';
+
+  @override
+  String get cumulativeTimeChartTitle => 'Cumulative Time by Event';
+
+  @override
   String get notificationChannelName => 'Session Tracking';
 
   @override

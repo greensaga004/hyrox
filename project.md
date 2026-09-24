@@ -189,7 +189,7 @@ Constraints / Non-Functional Requirements:
 | 5 | Persistence & recovery | Active session and splits persist to Hive and restore after restart/crash/reboot via a Resume / Discard prompt | High | FULL | 3 | DONE |
 | 6 | Background execution & notifications | Timing survives screen-off/locked/backgrounded via foreground task, with notifications (and Pause/Resume/Complete actions) on key events | High | FULL | 5 | DONE |
 | 7 | Voice alerts | Key session events trigger spoken TTS cues (e.g. "Workout Complete", "Start SkiErg") | Low | LIGHT | 3 | DONE |
-| 8 | Statistics & analytics | Statistics screen shows session totals, fastest/slowest/most-interrupted/longest-pause events, run analysis, fatigue index, and charts | Medium | FULL | 3 | TODO |
+| 8 | Statistics & analytics | Statistics screen shows session totals, fastest/slowest/most-interrupted/longest-pause events, run analysis, fatigue index, and charts | Medium | FULL | 3 | DONE |
 | 9 | History & comparison | History screen lists completed sessions with detail view and session comparison | Medium | LIGHT | 5 | TODO |
 | 10 | Settings | Settings screen switches language (persisted, no restart), shows app name/version/build, and lists future placeholders | Medium | LIGHT | 1 | TODO |
 | 11 | Export & share | A completed session exports to CSV, JSON, Excel, and PDF and can be shared | Low | LIGHT | 8 | TODO |
