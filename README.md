@@ -43,13 +43,16 @@ Implemented in the app now:
   - Localized spoken cues for key session transitions
   - Event start announcements (for example, "Start SkiErg")
   - Workout complete, pause started/ended, rest start/complete, and session complete cues
+- Statistics and analytics:
+  - Session totals, event highlights, run analysis, and fatigue index
+  - Charts for workout, pause, rest, and cumulative time trends
 - Session UI with per-event metrics and running totals
 - Localization wiring with ARB files and locale fallback behavior
 - Unit and widget tests for timer/session flow and key UI states
 
 Not yet implemented:
 
-- Statistics, history/comparison, and export
+- History/comparison and export
 
 ## Tech Stack (Current)
 
@@ -60,6 +63,7 @@ Not yet implemented:
 - Local storage setup: `hive`, `hive_flutter`
 - Localization: `flutter_localizations`, `intl`
 - Voice: `flutter_tts`
+- Charts: `fl_chart`
 
 ## Architecture
 
@@ -167,10 +171,10 @@ Completed:
 5. Persistence and recovery
 6. Background execution and notifications
 7. Voice alerts
+8. Statistics and analytics
 
 Next:
 
-8. Statistics and analytics
 9. History and comparison
 10. Settings completion
 11. Export and share

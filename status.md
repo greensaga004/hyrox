@@ -13,15 +13,15 @@ See `project.md` for Project Name, Repository, and Tech Stack.
 
 ## Current Work Item
 
-Work Item Name: Voice alerts
+Work Item Name: Statistics & analytics
 
-Description: Key session events trigger spoken TTS cues (e.g., "Workout Complete", "Start SkiErg"). Roadmap item #7 (LIGHT track, depends on item #3).
+Description: Statistics screen shows session totals, fastest/slowest/most-interrupted/longest-pause events, run analysis, fatigue index, and charts. Roadmap item #8 (FULL track, depends on item #3).
 
 ---
 
 ## Track
 
-LIGHT
+FULL
 
 Tracks:
 
@@ -226,18 +226,18 @@ If Pull Request Required = no, skip straight to `finish`.
 
 ### SPEC
 
-- [ ] Business Goal
-- [ ] User Story
-- [ ] MVP Defined
-- [ ] Scope Defined
-- [ ] Acceptance Criteria
+- [x] Business Goal
+- [x] User Story
+- [x] MVP Defined
+- [x] Scope Defined
+- [x] Acceptance Criteria
 
 ### TASK
 
-- [ ] Core / Logic Tasks
-- [ ] UI / Interface Tasks
-- [ ] Data / Storage Tasks
-- [ ] Test Tasks
+- [x] Core / Logic Tasks
+- [x] UI / Interface Tasks
+- [x] Data / Storage Tasks
+- [x] Test Tasks
 
 ### IMPLEMENTATION
 
@@ -257,11 +257,11 @@ If Pull Request Required = no, skip straight to `finish`.
 
 ## Current Task
 
-VERIFICATION in progress for roadmap item #7.
+VERIFICATION in progress for roadmap item #8 on branch
+feature/statistics-analytics.
 
-TTS voice cues are wired for workout/pause/rest/session transitions,
-localized in en/zh_TW, and covered by session controller unit tests;
-`flutter analyze` and `flutter test` are green.
+Statistics/analytics implementation is complete and locally validated with
+`flutter analyze` and `flutter test`; awaiting CI via PR before completion.
 
 > Keep this to 3-4 lines. Detail belongs in docs/workitems/<name>.md, not here.
 
@@ -269,7 +269,7 @@ localized in en/zh_TW, and covered by session controller unit tests;
 
 ## Next Action
 
-Prepare PR title/description and request approval to run open pr
+Prepare PR title/description and request approval to run `open pr`
 for CI execution.
 
 ---

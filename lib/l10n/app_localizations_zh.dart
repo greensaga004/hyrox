@@ -141,6 +141,69 @@ class AppLocalizationsZh extends AppLocalizations {
   String get recoveryDiscardButton => '捨棄';
 
   @override
+  String get viewStatisticsTooltip => '查看統計';
+
+  @override
+  String get statisticsTitle => '統計與分析';
+
+  @override
+  String get statisticsUnavailableTitle => '尚無統計資料';
+
+  @override
+  String get statisticsUnavailableMessage => '完成一次訓練後即可查看統計分析。';
+
+  @override
+  String get eventHighlightsTitle => '項目重點';
+
+  @override
+  String get runAnalysisTitle => '跑步分析';
+
+  @override
+  String get fastestEventLabel => '最快項目';
+
+  @override
+  String get slowestEventLabel => '最慢項目';
+
+  @override
+  String get mostInterruptedEventLabel => '最常中斷項目';
+
+  @override
+  String get longestPauseEventLabel => '最長暫停項目';
+
+  @override
+  String get fastestRunLabel => '最快跑步';
+
+  @override
+  String get slowestRunLabel => '最慢跑步';
+
+  @override
+  String get averageRunTimeLabel => '平均跑步時間';
+
+  @override
+  String get fatigueIndexLabel => '疲勞指數';
+
+  @override
+  String get fatigueIndexFormulaLabel => '後 4 項平均 - 前 4 項平均';
+
+  @override
+  String get averagePauseTimeLabel => '平均暫停時間';
+
+  @override
+  String get averageRestTimeLabel => '平均休息時間';
+
+  @override
+  String get workoutDurationChartTitle => '各項目訓練時間';
+
+  @override
+  String get pauseDurationChartTitle => '各項目暫停時間';
+
+  @override
+  String get restDurationChartTitle => '各項目休息時間';
+
+  @override
+  String get cumulativeTimeChartTitle => '各項目累積時間';
+
+  @override
   String get notificationChannelName => '訓練追蹤';
 
   @override
@@ -329,6 +392,69 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get recoveryDiscardButton => '捨棄';
+
+  @override
+  String get viewStatisticsTooltip => '查看統計';
+
+  @override
+  String get statisticsTitle => '統計與分析';
+
+  @override
+  String get statisticsUnavailableTitle => '尚無統計資料';
+
+  @override
+  String get statisticsUnavailableMessage => '完成一次訓練後即可查看統計分析。';
+
+  @override
+  String get eventHighlightsTitle => '項目重點';
+
+  @override
+  String get runAnalysisTitle => '跑步分析';
+
+  @override
+  String get fastestEventLabel => '最快項目';
+
+  @override
+  String get slowestEventLabel => '最慢項目';
+
+  @override
+  String get mostInterruptedEventLabel => '最常中斷項目';
+
+  @override
+  String get longestPauseEventLabel => '最長暫停項目';
+
+  @override
+  String get fastestRunLabel => '最快跑步';
+
+  @override
+  String get slowestRunLabel => '最慢跑步';
+
+  @override
+  String get averageRunTimeLabel => '平均跑步時間';
+
+  @override
+  String get fatigueIndexLabel => '疲勞指數';
+
+  @override
+  String get fatigueIndexFormulaLabel => '後 4 項平均 - 前 4 項平均';
+
+  @override
+  String get averagePauseTimeLabel => '平均暫停時間';
+
+  @override
+  String get averageRestTimeLabel => '平均休息時間';
+
+  @override
+  String get workoutDurationChartTitle => '各項目訓練時間';
+
+  @override
+  String get pauseDurationChartTitle => '各項目暫停時間';
+
+  @override
+  String get restDurationChartTitle => '各項目休息時間';
+
+  @override
+  String get cumulativeTimeChartTitle => '各項目累積時間';
 
   @override
   String get notificationChannelName => '訓練追蹤';
