@@ -141,7 +141,55 @@ class AppLocalizationsZh extends AppLocalizations {
   String get recoveryDiscardButton => '捨棄';
 
   @override
+  String get viewSettingsTooltip => '開啟設定';
+
+  @override
   String get viewStatisticsTooltip => '查看統計';
+
+  @override
+  String get settingsTitle => '設定';
+
+  @override
+  String get settingsLanguageSectionTitle => '語言';
+
+  @override
+  String get languageTraditionalChineseLabel => '繁體中文';
+
+  @override
+  String get languageEnglishLabel => 'English';
+
+  @override
+  String get settingsAppInfoSectionTitle => '應用程式資訊';
+
+  @override
+  String get settingsAppNameLabel => '應用程式名稱';
+
+  @override
+  String get settingsVersionLabel => '版本';
+
+  @override
+  String get settingsBuildNumberLabel => '建置號碼';
+
+  @override
+  String get settingsFutureSectionTitle => '未來設定';
+
+  @override
+  String get settingsFutureAutoTransition => '自動轉場';
+
+  @override
+  String get settingsFutureVoiceAlerts => '語音提示';
+
+  @override
+  String get settingsFutureNotificationSettings => '通知設定';
+
+  @override
+  String get settingsFutureDefaultRestDuration => '預設休息時間';
+
+  @override
+  String get settingsFutureTargetFinishTime => '目標完賽時間';
+
+  @override
+  String get settingsComingSoonLabel => '即將推出';
 
   @override
   String get statisticsTitle => '統計與分析';
@@ -394,7 +442,55 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get recoveryDiscardButton => '捨棄';
 
   @override
+  String get viewSettingsTooltip => '開啟設定';
+
+  @override
   String get viewStatisticsTooltip => '查看統計';
+
+  @override
+  String get settingsTitle => '設定';
+
+  @override
+  String get settingsLanguageSectionTitle => '語言';
+
+  @override
+  String get languageTraditionalChineseLabel => '繁體中文';
+
+  @override
+  String get languageEnglishLabel => 'English';
+
+  @override
+  String get settingsAppInfoSectionTitle => '應用程式資訊';
+
+  @override
+  String get settingsAppNameLabel => '應用程式名稱';
+
+  @override
+  String get settingsVersionLabel => '版本';
+
+  @override
+  String get settingsBuildNumberLabel => '建置號碼';
+
+  @override
+  String get settingsFutureSectionTitle => '未來設定';
+
+  @override
+  String get settingsFutureAutoTransition => '自動轉場';
+
+  @override
+  String get settingsFutureVoiceAlerts => '語音提示';
+
+  @override
+  String get settingsFutureNotificationSettings => '通知設定';
+
+  @override
+  String get settingsFutureDefaultRestDuration => '預設休息時間';
+
+  @override
+  String get settingsFutureTargetFinishTime => '目標完賽時間';
+
+  @override
+  String get settingsComingSoonLabel => '即將推出';
 
   @override
   String get statisticsTitle => '統計與分析';

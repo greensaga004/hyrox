@@ -357,11 +357,107 @@ abstract class AppLocalizations {
   /// **'Discard'**
   String get recoveryDiscardButton;
 
+  /// No description provided for @viewSettingsTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get viewSettingsTooltip;
+
   /// No description provided for @viewStatisticsTooltip.
   ///
   /// In en, this message translates to:
   /// **'View statistics'**
   String get viewStatisticsTooltip;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsTitle;
+
+  /// No description provided for @settingsLanguageSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingsLanguageSectionTitle;
+
+  /// No description provided for @languageTraditionalChineseLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Traditional Chinese'**
+  String get languageTraditionalChineseLabel;
+
+  /// No description provided for @languageEnglishLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get languageEnglishLabel;
+
+  /// No description provided for @settingsAppInfoSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Application Information'**
+  String get settingsAppInfoSectionTitle;
+
+  /// No description provided for @settingsAppNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Application Name'**
+  String get settingsAppNameLabel;
+
+  /// No description provided for @settingsVersionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get settingsVersionLabel;
+
+  /// No description provided for @settingsBuildNumberLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Build Number'**
+  String get settingsBuildNumberLabel;
+
+  /// No description provided for @settingsFutureSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Future Settings'**
+  String get settingsFutureSectionTitle;
+
+  /// No description provided for @settingsFutureAutoTransition.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto Transition'**
+  String get settingsFutureAutoTransition;
+
+  /// No description provided for @settingsFutureVoiceAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Voice Alerts'**
+  String get settingsFutureVoiceAlerts;
+
+  /// No description provided for @settingsFutureNotificationSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification Settings'**
+  String get settingsFutureNotificationSettings;
+
+  /// No description provided for @settingsFutureDefaultRestDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Default Rest Duration'**
+  String get settingsFutureDefaultRestDuration;
+
+  /// No description provided for @settingsFutureTargetFinishTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Target Finish Time'**
+  String get settingsFutureTargetFinishTime;
+
+  /// No description provided for @settingsComingSoonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get settingsComingSoonLabel;
 
   /// No description provided for @statisticsTitle.
   ///

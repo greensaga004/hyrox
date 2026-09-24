@@ -101,6 +101,13 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
             },
             icon: const Icon(Icons.insights_outlined),
           ),
+          IconButton(
+            tooltip: l10n.viewSettingsTooltip,
+            onPressed: () {
+              context.push('/settings');
+            },
+            icon: const Icon(Icons.settings_outlined),
+          ),
         ],
       ),
       body: SingleChildScrollView(
