@@ -5,8 +5,10 @@ import 'dart:ui';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hyrox/core/background/session_background_service.dart';
+import 'package:hyrox/core/extensions/hyrox_station_localization.dart';
 import 'package:hyrox/core/notifications/session_notification_service.dart';
 import 'package:hyrox/core/timer/timer_engine.dart';
+import 'package:hyrox/core/tts/session_voice_alert_service.dart';
 import 'package:hyrox/features/session/data/session_recovery_mapper.dart';
 import 'package:hyrox/features/session/data/session_recovery_models.dart';
 import 'package:hyrox/features/session/data/session_recovery_repository.dart';
@@ -26,10 +28,14 @@ sessionControllerProvider =
       final SessionNotificationService notificationService = ref.watch(
         sessionNotificationServiceProvider,
       );
+      final SessionVoiceAlertService voiceAlertService = ref.watch(
+        sessionVoiceAlertServiceProvider,
+      );
       return SessionController(
         recoveryRepository: repository,
         backgroundService: backgroundService,
         notificationService: notificationService,
+        voiceAlertService: voiceAlertService,
       );
     });
 
@@ -56,6 +62,7 @@ class SessionController extends StateNotifier<SessionViewState> {
     SessionRecoveryRepository? recoveryRepository,
     SessionBackgroundService? backgroundService,
     SessionNotificationService? notificationService,
+    SessionVoiceAlertService? voiceAlertService,
     this.enableTicker = true,
     this.tickInterval = const Duration(seconds: 1),
     this.autoTransitionEnabled = true,
@@ -68,6 +75,8 @@ class SessionController extends StateNotifier<SessionViewState> {
        _backgroundService = backgroundService ?? NoopSessionBackgroundService(),
        _notificationService =
            notificationService ?? const NoopSessionNotificationService(),
+         _voiceAlertService =
+           voiceAlertService ?? const NoopSessionVoiceAlertService(),
        _initialAutoTransitionEnabled = autoTransitionEnabled,
        _initialTransitionDelay = transitionDelay,
        _initialDefaultRestDuration = defaultRestDuration,
@@ -99,6 +108,7 @@ class SessionController extends StateNotifier<SessionViewState> {
   final SessionRecoveryRepository _recoveryRepository;
   final SessionBackgroundService _backgroundService;
   final SessionNotificationService _notificationService;
+  final SessionVoiceAlertService _voiceAlertService;
   final bool enableTicker;
   final Duration tickInterval;
   final bool autoTransitionEnabled;
@@ -194,18 +204,21 @@ class SessionController extends StateNotifier<SessionViewState> {
     _clearAutoTransitionSchedule();
     final TimerSnapshot snapshot = _engine.startWorkout();
     _applySnapshot(snapshot);
+    _announceStartCurrentEvent();
     unawaited(_persistRecoveryState());
   }
 
   void startPause() {
     final TimerSnapshot snapshot = _engine.startPause();
     _applySnapshot(snapshot);
+    _announceVoiceCue((AppLocalizations l10n) => l10n.voicePauseStarted);
     unawaited(_persistRecoveryState());
   }
 
   void resumeWorkout() {
     final TimerSnapshot snapshot = _engine.resumeWorkout();
     _applySnapshot(snapshot);
+    _announceVoiceCue((AppLocalizations l10n) => l10n.voicePauseEnded);
     unawaited(_persistRecoveryState());
   }
 
@@ -213,6 +226,7 @@ class SessionController extends StateNotifier<SessionViewState> {
     _clearAutoTransitionSchedule();
     final TimerSnapshot snapshot = _engine.completeWorkout();
     _applySnapshot(snapshot);
+    _announceVoiceCue((AppLocalizations l10n) => l10n.voiceWorkoutComplete);
 
     if (state.autoTransitionEnabled) {
       _scheduleAutoTransition(AutoTransitionAction.startRest);
@@ -225,6 +239,7 @@ class SessionController extends StateNotifier<SessionViewState> {
     _clearAutoTransitionSchedule();
     final TimerSnapshot snapshot = _engine.startRest();
     _applySnapshot(snapshot);
+    _announceVoiceCue((AppLocalizations l10n) => l10n.voiceStartRest);
     _processAutoTransitions();
     unawaited(_persistRecoveryState());
   }
@@ -287,6 +302,7 @@ class SessionController extends StateNotifier<SessionViewState> {
     TimerSnapshot snapshot, {
     required bool scheduleNextWorkout,
   }) {
+    _announceVoiceCue((AppLocalizations l10n) => l10n.voiceRestComplete);
     final List<EventSplit> updatedSplits = List<EventSplit>.from(state.splits);
     updatedSplits[state.currentEventIndex] = EventSplit.fromSnapshot(
       snapshot,
@@ -303,6 +319,7 @@ class SessionController extends StateNotifier<SessionViewState> {
         timerSnapshot: snapshot,
         clearAutoTransition: true,
       );
+      _announceVoiceCue((AppLocalizations l10n) => l10n.voiceSessionComplete);
       unawaited(_syncRuntimeIntegrations());
       return;
     }
@@ -329,6 +346,7 @@ class SessionController extends StateNotifier<SessionViewState> {
     _runtimeSyncQueued = false;
     _ticker?.cancel();
     unawaited(_notificationActions?.cancel());
+    unawaited(_voiceAlertService.stop());
     unawaited(_shutdownRuntimeIntegrations());
     super.dispose();
   }
@@ -405,6 +423,7 @@ class SessionController extends StateNotifier<SessionViewState> {
         if (action == AutoTransitionAction.startRest && state.canStartRest) {
           final TimerSnapshot snapshot = _engine.startRest();
           _applySnapshot(snapshot);
+          _announceVoiceCue((AppLocalizations l10n) => l10n.voiceStartRest);
           progressed = true;
           progressedAny = true;
         }
@@ -413,6 +432,7 @@ class SessionController extends StateNotifier<SessionViewState> {
             state.canStartWorkout) {
           final TimerSnapshot snapshot = _engine.startWorkout();
           _applySnapshot(snapshot);
+          _announceStartCurrentEvent();
           progressed = true;
           progressedAny = true;
         }
@@ -498,6 +518,11 @@ class SessionController extends StateNotifier<SessionViewState> {
     }
 
     await _notificationService.initialize();
+    if (!mounted) {
+      return;
+    }
+
+    await _voiceAlertService.initialize();
     if (!mounted) {
       return;
     }
@@ -589,6 +614,17 @@ class SessionController extends StateNotifier<SessionViewState> {
     } on FlutterError {
       return lookupAppLocalizations(const Locale('en'));
     }
+  }
+
+  void _announceStartCurrentEvent() {
+    final AppLocalizations l10n = _notificationLocalizations();
+    final String eventName = state.currentEvent.station.localizedName(l10n);
+    unawaited(_voiceAlertService.announce(l10n.voiceStartEvent(eventName)));
+  }
+
+  void _announceVoiceCue(String Function(AppLocalizations) messageBuilder) {
+    final AppLocalizations l10n = _notificationLocalizations();
+    unawaited(_voiceAlertService.announce(messageBuilder(l10n)));
   }
 
   static String _formatDuration(Duration value) {

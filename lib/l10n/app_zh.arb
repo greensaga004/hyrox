@@ -18,6 +18,18 @@
   "totalSessionLabel": "全程總時間",
   "completedEventsLabel": "已完成項目",
   "sessionCompletedTitle": "訓練完成",
+  "voiceWorkoutComplete": "訓練完成",
+  "voicePauseStarted": "已暫停",
+  "voicePauseEnded": "繼續訓練",
+  "voiceStartRest": "開始休息",
+  "voiceRestComplete": "休息完成",
+  "voiceSessionComplete": "全程完成",
+  "voiceStartEvent": "開始{eventName}",
+  "@voiceStartEvent": {
+    "placeholders": {
+      "eventName": {}
+    }
+  },
   "startWorkoutButton": "開始訓練",
   "pauseButton": "暫停",
   "resumeButton": "繼續",
