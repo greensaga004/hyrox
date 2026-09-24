@@ -75,7 +75,7 @@ class SessionController extends StateNotifier<SessionViewState> {
        _backgroundService = backgroundService ?? NoopSessionBackgroundService(),
        _notificationService =
            notificationService ?? const NoopSessionNotificationService(),
-         _voiceAlertService =
+       _voiceAlertService =
            voiceAlertService ?? const NoopSessionVoiceAlertService(),
        _initialAutoTransitionEnabled = autoTransitionEnabled,
        _initialTransitionDelay = transitionDelay,

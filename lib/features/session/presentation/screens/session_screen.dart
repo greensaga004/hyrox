@@ -348,7 +348,6 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
         return l10n.autoTransitionActionStartNextWorkout;
     }
   }
-
 }
 
 class _MetricTile extends StatelessWidget {
