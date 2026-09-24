@@ -36,6 +36,8 @@
   "recoveryPromptMessage": "An unfinished session was found. Resume it or discard and start a new session.",
   "recoveryResumeButton": "Resume",
   "recoveryDiscardButton": "Discard",
+  "notificationChannelName": "Session Tracking",
+  "notificationChannelDescription": "Background tracking controls for active HYROX sessions.",
   "eventRun1": "Run 1",
   "eventSkiErg": "SkiErg",
   "eventRun2": "Run 2",

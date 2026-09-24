@@ -2,6 +2,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hyrox/app/app.dart';
+import 'package:hyrox/core/background/session_background_service.dart';
+import 'package:hyrox/core/notifications/session_notification_service.dart';
 import 'package:hyrox/core/storage/hive_bootstrap.dart';
 import 'package:hyrox/features/session/data/session_recovery_repository.dart';
 
@@ -14,6 +16,12 @@ Future<void> main() async {
       overrides: <Override>[
         sessionRecoveryRepositoryProvider.overrideWithValue(
           HiveSessionRecoveryRepository(),
+        ),
+        sessionBackgroundServiceProvider.overrideWithValue(
+          AndroidSessionBackgroundService(),
+        ),
+        sessionNotificationServiceProvider.overrideWithValue(
+          AndroidSessionNotificationService(),
         ),
       ],
       child: const HyroxApp(),

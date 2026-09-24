@@ -34,13 +34,17 @@ Implemented in the app now:
   - Hive-backed recovery payload for in-progress session state
   - Resume/Discard prompt on app relaunch when recoverable state exists
   - Timestamp-consistent timing after restore
+- Background execution and actionable notifications (Android):
+  - Foreground service lifecycle synced to active session state
+  - Ongoing session notification with Pause / Resume / Complete Workout actions
+  - Notification action dispatch routed through session guardrails
+  - Notification channel strings localized for en/zh_TW
 - Session UI with per-event metrics and running totals
 - Localization wiring with ARB files and locale fallback behavior
 - Unit and widget tests for timer/session flow and key UI states
 
 Not yet implemented:
 
-- Background task integration + actionable notifications
 - Voice alerts (TTS)
 - Statistics, history/comparison, and export
 
@@ -156,10 +160,10 @@ Completed:
 2. Timer engine
 3. Session tracking flow
 4. Auto transition mode
+5. Persistence and recovery
 
 Next:
 
-5. Persistence and recovery
 6. Background execution and notifications
 7. Voice alerts
 8. Statistics and analytics
